@@ -1,4 +1,5 @@
 import pygame
+from pygame.draw import *
 
 
 # Цвета тетрамино
@@ -13,8 +14,10 @@ colors = [ CYAN, BLUE, MUSTARD, YELLOW,
            GREEN, VIOLET, RED
            ]
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 # Настроечные константы (впоследствии перенесем в отдельный файл)
+FPS = 30
 width = 800 # ширина экрана
 height = 800 # высота экрана
 cube_edge = 35 # ребро одного кубика
@@ -47,8 +50,8 @@ class Cube:
         '''
         Рисует кубик по координатам в клетках "стакана"
         '''
-        rect(surface, color, (calc_x(x), calc_y(y), cube_edge, cube_edge))
-        rect(surface, BLACK, (calc_x(x), calc_y(y), cube_edge, cube_edge), 1)
+        rect(self.surface, self.color, (calc_x(self.x), calc_y(self.y), cube_edge, cube_edge))
+        rect(self.surface, BLACK, (calc_x(self.x), calc_y(self.y), cube_edge, cube_edge), 1)
 
     def touch_check(self):
         '''
@@ -63,11 +66,22 @@ class Cube:
 
 
 class Figure:
-    def __init__(self, surface, x, y, color):
+    def __init__(self, surface, x, y, color, type):
         self.surface = surface
         self.x = x # координата x опорного кубика, выраженная в клетках "стакана"
         self.y = y  # координата y опорного кубика, выраженная в клетках "стакана"
         self.color = color
+        self.type = type # тип фигуры
+
+    def make(self):
+        cube_list = []
+        for i in figure_list[self.type]:
+            cube_list.append( Cube(self.surface, self.x + i[0], self.y + i[1], self.color) )
+        return cube_list
+
+    def draw(self):
+        for i in Figure.make(self):
+            Cube.draw(i)
 
 
 pygame.init()
@@ -81,3 +95,54 @@ for i in [0, 11]:
 for j in [0, 21]:
     for i in range(12):
         glass_list[i][j] = False
+
+# Словарь фигур (впоследствии перенести в файл с настройками!)
+figure_list = { 'I': [(-1, 0), (0, 0), (1, 0), (2, 0)],
+                'J': [(-1, -1), (-1, 0), (0, 0), (1, 0)],
+                'L': [(-1, 1), (0, 1), (1, 1), (1, 0)],
+                'O': [(0, 0), (0, -1), (1, 0), (1, -1)],
+                'S': [(-1, 0), (0, 0), (0, -1), (1, -1)],
+                'T': [(-1, 0), (0, 0), (0, -1), (1, 0)],
+                'Z': [(-1, 0), (0, 0), (0, 1), (1, 1)]
+                }
+
+finished = False
+clock = pygame.time.Clock()
+
+while not finished:
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            finished = True
+        elif event.type == pygame.MOUSEWHEEL:
+            pass
+
+    # Примеры фигур (впоследствии удалить!)
+    example = Figure(screen, 2, 2, CYAN, 'I')
+    Figure.draw(example)
+
+    example = Figure(screen, 2, 5, BLUE, 'J')
+    Figure.draw(example)
+
+    example = Figure(screen, 2, 8, MUSTARD, 'L')
+    Figure.draw(example)
+
+    example = Figure(screen, 2, 12, YELLOW, 'O')
+    Figure.draw(example)
+
+    example = Figure(screen, 2, 15, GREEN, 'S')
+    Figure.draw(example)
+
+    example = Figure(screen, 2, 18, VIOLET, 'T')
+    Figure.draw(example)
+
+    example = Figure(screen, 8, 11, RED, 'Z')
+    Figure.draw(example)
+
+    # Границы "стакана"
+    rect(screen, BLACK, (glass_x, glass_y, cube_edge*10, cube_edge*20), 1)
+
+    pygame.display.update()
+    screen.fill(WHITE)
+
+pygame.quit
