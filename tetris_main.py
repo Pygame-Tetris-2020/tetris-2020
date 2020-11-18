@@ -1,5 +1,7 @@
 import pygame
+
 from pygame.draw import *
+from random import *
 
 
 # Цвета тетрамино
@@ -17,7 +19,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 # Настроечные константы (впоследствии перенесем в отдельный файл)
-FPS = 30
+FPS = 3
 width = 800 # ширина экрана
 height = 800 # высота экрана
 cube_edge = 35 # ребро одного кубика
@@ -58,10 +60,10 @@ class Cube:
         Проверяет свободность соседних с данным кубиком клеток.
         Возвращает список логических значений, выражающих свободность клеток снизу, слева, сверху и справа от кубика
         '''
-        return [ glass_list[self.x, self.y + 1],
-                 glass_list[self.x - 1, self.y],
-                 glass_list[self.x, self.y - 1],
-                 glass_list[self.x + 1, self.y]
+        return [ glass_list[self.x][self.y + 1],
+                 glass_list[self.x - 1][self.y],
+                 glass_list[self.x][self.y - 1],
+                 glass_list[self.x + 1][self.y]
                  ]
 
 
@@ -83,6 +85,10 @@ class Figure:
         for i in Figure.make(self):
             Cube.draw(i)
 
+    def vert_move(self):
+        self.y = self.y + 1
+        Figure.make(self)
+
 
 pygame.init()
 screen = pygame.display.set_mode((width, height))
@@ -98,13 +104,19 @@ for j in [0, 21]:
 
 # Словарь фигур (впоследствии перенести в файл с настройками!)
 figure_list = { 'I': [(-1, 0), (0, 0), (1, 0), (2, 0)],
-                'J': [(-1, -1), (-1, 0), (0, 0), (1, 0)],
-                'L': [(-1, 1), (0, 1), (1, 1), (1, 0)],
+                'J': [(0, 0), (-1, 0), (-1, -1), (1, 0)],
+                'L': [(0, 0), (-1, 0), (1, 0), (1, -1)],
                 'O': [(0, 0), (0, -1), (1, 0), (1, -1)],
                 'S': [(-1, 0), (0, 0), (0, -1), (1, -1)],
                 'T': [(-1, 0), (0, 0), (0, -1), (1, 0)],
-                'Z': [(-1, 0), (0, 0), (0, 1), (1, 1)]
+                'Z': [(1, 0), (0, 0), (0, -1), (-1, -1)]
                 }
+
+# Список ключей (вероятно, следует оставить здесь, а не переносить в файл с настройками)
+key_list = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+
+curr_fig = Figure(screen, 5, 0, choice(colors), choice(key_list)) # Первая фигура
+next_fig = Figure(screen, 5, 0, choice(colors), choice(key_list)) # Фигура, следующая за первой
 
 finished = False
 clock = pygame.time.Clock()
@@ -117,32 +129,18 @@ while not finished:
         elif event.type == pygame.MOUSEWHEEL:
             pass
 
-    # Примеры фигур (впоследствии удалить!)
-    example = Figure(screen, 2, 2, CYAN, 'I')
-    Figure.draw(example)
+    screen.fill(WHITE) # Фон
+    rect(screen, BLACK, (glass_x, glass_y, cube_edge * 10, cube_edge * 20), 1) # Границы стакана
 
-    example = Figure(screen, 2, 5, BLUE, 'J')
-    Figure.draw(example)
-
-    example = Figure(screen, 2, 8, MUSTARD, 'L')
-    Figure.draw(example)
-
-    example = Figure(screen, 2, 12, YELLOW, 'O')
-    Figure.draw(example)
-
-    example = Figure(screen, 2, 15, GREEN, 'S')
-    Figure.draw(example)
-
-    example = Figure(screen, 2, 18, VIOLET, 'T')
-    Figure.draw(example)
-
-    example = Figure(screen, 8, 11, RED, 'Z')
-    Figure.draw(example)
-
-    # Границы "стакана"
-    rect(screen, BLACK, (glass_x, glass_y, cube_edge*10, cube_edge*20), 1)
+    Figure.draw(curr_fig)
+    for i in Figure.make(curr_fig):
+        if Cube.touch_check(i)[0]:
+            Figure.vert_move(curr_fig)
+            break
+        else:
+            curr_fig = next_fig
+            next_fig = Figure(screen, 5, 0, choice(colors), choice(key_list))
 
     pygame.display.update()
-    screen.fill(WHITE)
 
 pygame.quit
