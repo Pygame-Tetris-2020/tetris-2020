@@ -19,7 +19,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 # Настроечные константы (впоследствии перенесем в отдельный файл)
-FPS = 3
+FPS = 1
 width = 800 # ширина экрана
 height = 800 # высота экрана
 cube_edge = 35 # ребро одного кубика
@@ -52,8 +52,9 @@ class Cube:
         '''
         Рисует кубик по координатам в клетках "стакана"
         '''
-        rect(self.surface, self.color, (calc_x(self.x), calc_y(self.y), cube_edge, cube_edge))
-        rect(self.surface, BLACK, (calc_x(self.x), calc_y(self.y), cube_edge, cube_edge), 1)
+        if 0 < self.x < 11 and 0 < self.y < 21:
+            rect(self.surface, self.color, (calc_x(self.x), calc_y(self.y), cube_edge, cube_edge))
+            rect(self.surface, BLACK, (calc_x(self.x), calc_y(self.y), cube_edge, cube_edge), 1)
 
     def touch_check(self):
         '''
@@ -89,6 +90,12 @@ class Figure:
         self.y = self.y + 1
         Figure.make(self)
 
+    def hor_move(self, direction):
+        if (Cube.touch_check(Figure.make(self)[1])[1] and direction == -1) or \
+                (Cube.touch_check(Figure.make(self)[2])[3] and direction == 1):
+            self.x = self.x + direction
+            Figure.make(self)
+
 
 pygame.init()
 screen = pygame.display.set_mode((width, height))
@@ -103,13 +110,14 @@ for j in [0, 21]:
         glass_list[i][j] = False
 
 # Словарь фигур (впоследствии перенести в файл с настройками!)
-figure_list = { 'I': [(-1, 0), (0, 0), (1, 0), (2, 0)],
-                'J': [(0, 0), (-1, 0), (-1, -1), (1, 0)],
+# Порядок следования кубиков в словаре: самый нижний, самый левый, самый правый, оставшийся
+figure_list = { 'I': [(0, 0), (-1, 0), (2, 0), (1, 0)],
+                'J': [(0, 0), (-1, 0), (1, 0), (-1, -1)],
                 'L': [(0, 0), (-1, 0), (1, 0), (1, -1)],
                 'O': [(0, 0), (0, -1), (1, 0), (1, -1)],
-                'S': [(-1, 0), (0, 0), (0, -1), (1, -1)],
-                'T': [(-1, 0), (0, 0), (0, -1), (1, 0)],
-                'Z': [(1, 0), (0, 0), (0, -1), (-1, -1)]
+                'S': [(-1, 0), (0, 0), (1, -1), (0, -1)],
+                'T': [(0, 0), (-1, 0), (1, 0), (0, -1)],
+                'Z': [(0, 0), (-1, -1), (1, 0), (0, -1)]
                 }
 
 # Список ключей (вероятно, следует оставить здесь, а не переносить в файл с настройками)
@@ -117,6 +125,9 @@ key_list = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
 
 curr_fig = Figure(screen, 5, 0, choice(colors), choice(key_list)) # Первая фигура
 next_fig = Figure(screen, 5, 0, choice(colors), choice(key_list)) # Фигура, следующая за первой
+
+# Список неподвижных кубиков, отображаемых на экране
+dead_cubes = []
 
 finished = False
 clock = pygame.time.Clock()
@@ -128,18 +139,33 @@ while not finished:
             finished = True
         elif event.type == pygame.MOUSEWHEEL:
             pass
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                Figure.hor_move(curr_fig, -1)
+            elif event.key == pygame.K_RIGHT:
+                Figure.hor_move(curr_fig, 1)
 
     screen.fill(WHITE) # Фон
     rect(screen, BLACK, (glass_x, glass_y, cube_edge * 10, cube_edge * 20), 1) # Границы стакана
 
     Figure.draw(curr_fig)
+
+    # Исправить данный цикл. Проблема: проверить свободность поля под всеми кубиками,
+    # но передвинуть фигуру только один раз.
     for i in Figure.make(curr_fig):
         if Cube.touch_check(i)[0]:
             Figure.vert_move(curr_fig)
             break
         else:
+            for j in Figure.make(curr_fig):
+                glass_list[j.x][j.y] = False
+            dead_cubes += Figure.make(curr_fig)
             curr_fig = next_fig
             next_fig = Figure(screen, 5, 0, choice(colors), choice(key_list))
+            break
+
+    for i in dead_cubes:
+        Cube.draw(i)
 
     pygame.display.update()
 
