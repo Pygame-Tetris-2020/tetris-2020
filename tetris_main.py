@@ -105,9 +105,8 @@ glass_list = [ [True for j in range(22)] for i in range(12) ]
 for i in [0, 11]:
     for j in range(22):
         glass_list[i][j] = False
-for j in [0, 21]:
-    for i in range(12):
-        glass_list[i][j] = False
+for i in range(12):
+    glass_list[i][21] = False
 
 # Словарь фигур (впоследствии перенести в файл с настройками!)
 # Порядок следования кубиков в словаре: самый нижний, самый левый, самый правый, оставшийся
@@ -115,7 +114,7 @@ figure_list = { 'I': [(0, 0), (-1, 0), (2, 0), (1, 0)],
                 'J': [(0, 0), (-1, 0), (1, 0), (-1, -1)],
                 'L': [(0, 0), (-1, 0), (1, 0), (1, -1)],
                 'O': [(0, 0), (0, -1), (1, 0), (1, -1)],
-                'S': [(-1, 0), (0, 0), (1, -1), (0, -1)],
+                'S': [(0, 0), (-1, 0), (1, -1), (0, -1)],
                 'T': [(0, 0), (-1, 0), (1, 0), (0, -1)],
                 'Z': [(0, 0), (-1, -1), (1, 0), (0, -1)]
                 }
@@ -150,19 +149,21 @@ while not finished:
 
     Figure.draw(curr_fig)
 
-    # Исправить данный цикл. Проблема: проверить свободность поля под всеми кубиками,
-    # но передвинуть фигуру только один раз.
     for i in Figure.make(curr_fig):
         if Cube.touch_check(i)[0]:
-            Figure.vert_move(curr_fig)
-            break
+            can_be_moved = True
         else:
-            for j in Figure.make(curr_fig):
-                glass_list[j.x][j.y] = False
+            can_be_moved = False
+            break
+
+    if can_be_moved:
+        Figure.vert_move(curr_fig)
+    else:
+        for j in Figure.make(curr_fig):
+            glass_list[j.x][j.y] = False
             dead_cubes += Figure.make(curr_fig)
             curr_fig = next_fig
             next_fig = Figure(screen, 5, 0, choice(colors), choice(key_list))
-            break
 
     for i in dead_cubes:
         Cube.draw(i)
