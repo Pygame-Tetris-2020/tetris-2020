@@ -6,11 +6,8 @@ from pygame import *
 import tetris_settings as sett
 
 
-# coding UTF-8
-
-
 def calc_x(x):
-    """Принимает координату "x" кубика в клетках "стакана".
+    """Принимает координату "x" кубика в клетках 'стакана'.
 
     Возвращает экранную координату "x" левого верхнего угла кубика.
 
@@ -19,7 +16,7 @@ def calc_x(x):
 
 
 def calc_y(y):
-    """Принимает координату "y" кубика в клетках "стакана".
+    """Принимает координату "y" кубика в клетках 'стакана'.
 
     Возвращает экранную координату "y" левого верхнего угла кубика.
 
@@ -29,16 +26,25 @@ def calc_y(y):
 
 class Cube:
 
+    """Создает кубик, являющийся частью полной фигуры."""
+
     def __init__(self, surface, x, y, color):
+        """Инициализация кубика.
+
+        Принимает следующие аргументы:
+        surface -- поверхность, на которой изображается кубик
+        x -- координата х, выраженная в клетках 'стакана'
+        y -- координата у, выраженная в клетках 'стакана'
+        color -- цвет кубика
+
+        """
         self.surface = surface
-        self.x = x  # координата x, выраженная в клетках "стакана"
-        self.y = y  # координата y, выраженная в клетках "стакана"
+        self.x = x
+        self.y = y
         self.color = color
 
     def draw(self):
-        """Рисует кубик по координатам в клетках "стакана".
-
-        """
+        """Рисует кубик по координатам в клетках 'стакана'.  """
         if 0 < self.x < 11 and 0 < self.y < 21:
             pygame.draw.rect(self.surface, self.color,
                              (calc_x(self.x), calc_y(self.y), sett.cube_edge, sett.cube_edge))
@@ -62,15 +68,31 @@ class Cube:
 
 class Figure:
 
+    """Создает фигуру определенной формы, состоящую из четырёх кубиков.  """
+
     def __init__(self, surface, x, y, color, type):
+        """Инициализация фигуры, состоящей из четырёх кубиков.
+
+        Положение фигуры определяется её ориентацией и положением опорного кубика.
+
+        Принимает следующие аргументы:
+        surface -- поверхность, на которой изображается фигура
+        x -- координата х опорного кубика, выраженная в клетках "стакана"
+        y -- координата у опорного кубика, выраженная в клетках "стакана"
+        color -- цвет кубика
+        type -- тип фигуры
+        orient -- ориентация фигуры
+
+        """
         self.surface = surface
-        self.x = x  # координата x опорного кубика, выраженная в клетках "стакана"
-        self.y = y  # координата y опорного кубика, выраженная в клетках "стакана"
+        self.x = x
+        self.y = y
         self.color = color
         self.type = type
-        self.orient = 0  # ориентация фигуры
+        self.orient = 0
 
     def make(self):
+        """Возвращает список кубиков, из которых состоит фигура.  """
         cube_list = []
         for i in sett.figure_dict[self.type][self.orient]:
             cube_list.append(Cube(self.surface, self.x + i[0],
@@ -78,27 +100,39 @@ class Figure:
         return cube_list
 
     def draw(self):
+        """Рисует фигуру.  """
         for i in Figure.make(self):
             Cube.draw(i)
 
     def vert_move(self):
+        """Отвечает за вертикальное движение(падение в ходе игры) фигуры.  """
         self.y = self.y + 1
         Figure.make(self)
 
     def hor_move(self, direction):
+        """Отвечает за движение фигуры влево-вправо.
+
+        Принимает аргумент direction -- направление движения
+
+        """
         if (Cube.touch_check(Figure.make(self)[1])[1] and direction == -1) or \
                 (Cube.touch_check(Figure.make(self)[2])[3] and direction == 1):
             self.x = self.x + direction
             Figure.make(self)
 
     def turn(self, direction):
+        """Отвечает за поворот фигуры.
+
+        Принимает аргумент direction -- направление поворота
+
+        """
         self.orient = (self.orient + direction) % 4
 
 
 pygame.init()
 screen = pygame.display.set_mode((sett.width, sett.height))
 
-# Присваивание логических значений клеткам "стакана"
+"""Присваивание логических значений клеткам 'стакана'  """
 glass_list = [[True for j in range(22)] for i in range(12)]
 for i in [0, 11]:
     for j in range(22):
@@ -106,13 +140,15 @@ for i in [0, 11]:
 for i in range(12):
     glass_list[i][21] = False
 
-# Список ключей фигур
+"""Список ключей фигур """
 key_list = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
 
-curr_fig = Figure(screen, 5, 0, choice(sett.colors), choice(key_list))  # Первая фигура
-next_fig = Figure(screen, 5, 0, choice(sett.colors), choice(key_list))  # Фигура, следующая за первой
+"""Первая фигура """
+curr_fig = Figure(screen, 5, 0, choice(sett.colors), choice(key_list))
+"""Фигура, следующая за первой """
+next_fig = Figure(screen, 5, 0, choice(sett.colors), choice(key_list))
 
-# Список неподвижных кубиков, отображаемых на экране
+""" Список неподвижных кубиков, отображаемых на экране """
 dead_cubes = []
 
 finished = False
