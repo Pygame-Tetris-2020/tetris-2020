@@ -3,6 +3,10 @@ from random import *
 import pygame
 from pygame import *
 
+import os
+
+import datetime
+
 import tetris_settings as sett
 
 
@@ -154,6 +158,17 @@ dead_cubes = []
 finished = False
 clock = pygame.time.Clock()
 
+""" Запись в файл даты и времени игры """
+file = open("tetris_datetime.txt", "a")
+t = datetime.datetime.now()
+file.write(str(t)[0:16] + '\n')
+file.close()
+
+""" Запись в файл количества очков. Пока они начисляются случайно. """
+file = open("tetris_score.txt", "a")
+file.write(str(randint(5, 20)) + '\n')
+file.close()
+
 while not finished:
     clock.tick(sett.FPS)
     for event in pygame.event.get():
@@ -168,6 +183,8 @@ while not finished:
                 curr_fig.turn(1)
             elif event.key == pygame.K_DOWN:
                 curr_fig.turn(-1)
+            elif event.key == pygame.K_s:
+                os.system('statistics.py')
 
     screen.fill(sett.WHITE)  # Фон
     # Границы стакана
