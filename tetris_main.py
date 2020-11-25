@@ -39,7 +39,7 @@ class Cube:
         """Рисует кубик по координатам в клетках "стакана".
 
         """
-        if 0 < self.x < 11 and 0 < self.y < 21:
+        if 0 < self.x < 17 and 0 < self.y < 21:
             pygame.draw.rect(self.surface, self.color,
                              (calc_x(self.x), calc_y(self.y), sett.cube_edge, sett.cube_edge))
             pygame.draw.rect(self.surface, sett.BLACK,
@@ -53,10 +53,10 @@ class Cube:
         снизу, слева, сверху и справа от кубика.
 
         """
-        return [glass_list[self.x][self.y + 1],
-                glass_list[self.x - 1][self.y],
-                glass_list[self.x][self.y - 1],
-                glass_list[self.x + 1][self.y]
+        return [glass.cells[self.y + 1][self.x],
+                glass.cells[self.y][self.x - 1],
+                glass.cells[self.y - 1][self.x],
+                glass.cells[self.y][self.x + 1]
                 ]
 
 
@@ -95,28 +95,52 @@ class Figure:
         self.orient = (self.orient + direction) % 4
 
 
+class Box:
+
+    def __init__(self, surface, color, x_left_up, y_left_up, width, height):
+        self.surface = surface
+        self.color = color  # цвет границы поля
+        self.x_left_up = x_left_up  # координата x левого верхнего угла поля
+        self.y_left_up = y_left_up  # координата y левого верхнего угла поля
+        self.width = width  # ширина поля в клетках
+        self.height = height  # высота поля в клетках
+
+        self.cells = [[True for j in range(self.width + 2)] for i in range(self.height + 2)] # список состояний клеток
+        for i in [self.height + 1]:
+            for j in range(self.width + 2):
+                self.cells[i][j] = False
+        for j in [0, self.width + 1]:
+            for i in range(self.height + 2):
+                self.cells[i][j] = False
+
+    def draw(self):
+        pygame.draw.rect(screen, self.color, (self.x_left_up + 1, self.y_left_up + 1,
+                                              sett.cube_edge * self.width, sett.cube_edge * self.height), 1)
+
+    def block_cell(self, x, y):
+        self.cells[x][y] = False
+
+    def free_cell(self, x, y):
+        self.cells[x][y] = True
+
+
 pygame.init()
 screen = pygame.display.set_mode((sett.width, sett.height))
 
-# Присваивание логических значений клеткам "стакана"
-glass_list = [[True for j in range(22)] for i in range(12)]
-for i in [0, 11]:
-    for j in range(22):
-        glass_list[i][j] = False
-for i in range(12):
-    glass_list[i][21] = False
+glass = Box(screen, sett.BLACK, sett.glass_x, sett.glass_y, 10, 20)
+next_box = Box(screen, sett.BLACK, sett.next_box_x, sett.next_box_y, 5, 5)
 
-# Список ключей фигур
-key_list = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
-
-curr_fig = Figure(screen, 5, 0, choice(sett.colors), choice(key_list))  # Первая фигура
-next_fig = Figure(screen, 5, 0, choice(sett.colors), choice(key_list))  # Фигура, следующая за первой
+curr_fig = Figure(screen, 5, 0, choice(sett.colors), choice(list(sett.figure_dict)))  # Первая фигура
+next_fig = Figure(screen, 13, 3, choice(sett.colors), choice(list(sett.figure_dict)))  # Фигура, следующая за первой
 
 # Список неподвижных кубиков, отображаемых на экране
 dead_cubes = []
 
 finished = False
 clock = pygame.time.Clock()
+
+control_tick = 0
+moving_delay = 500
 
 while not finished:
     clock.tick(sett.FPS)
@@ -132,13 +156,18 @@ while not finished:
                 curr_fig.turn(1)
             elif event.key == pygame.K_DOWN:
                 curr_fig.turn(-1)
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            moving_delay = 25
+        else:
+            moving_delay = 500
 
     screen.fill(sett.WHITE)  # Фон
-    # Границы стакана
-    pygame.draw.rect(screen, sett.BLACK, (sett.glass_x, sett.glass_y,
-                                          sett.cube_edge * 10, sett.cube_edge * 20), 1)
+
+    glass.draw()
+    next_box.draw()
 
     curr_fig.draw()
+    next_fig.draw()
 
     for i in curr_fig.make():
         if i.touch_check()[0]:
@@ -149,17 +178,20 @@ while not finished:
 
     # noinspection PyUnboundLocalVariable
     if can_be_moved:
-        curr_fig.vert_move()
+        if pygame.time.get_ticks() - control_tick >= moving_delay:
+            curr_fig.vert_move()
+            control_tick = pygame.time.get_ticks()
     else:
         for j in curr_fig.make():
-            glass_list[j.x][j.y] = False
-            dead_cubes += curr_fig.make()
-            curr_fig = next_fig
-            next_fig = Figure(screen, 5, 0,
-                              choice(sett.colors), choice(key_list))
+            glass.block_cell(j.y, j.x)
+        dead_cubes += curr_fig.make()
+        next_fig.x = 5
+        next_fig.y = 0
+        curr_fig = next_fig
+        next_fig = Figure(screen, 13, 3, choice(sett.colors), choice(list(sett.figure_dict)))
 
-    for i in dead_cubes:
-        i.draw()
+    for dead_cube in dead_cubes:
+        dead_cube.draw()
 
     pygame.display.update()
 
