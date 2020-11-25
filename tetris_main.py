@@ -123,6 +123,22 @@ class Box:
     def free_cell(self, x, y):
         self.cells[x][y] = True
 
+    def is_line_free (self, x):
+        line = False
+        for i in [x]:
+            for j in range(self.width + 2):
+                line = bool(line + self.cells[i][j])
+        return line
+
+    def destroy_line (self, num, dead_cubes):
+        if not self.is_line_free(num):
+            for dead_cube in dead_cubes:
+                if dead_cube.y <= num:
+                    self.free_cell(dead_cube.y, dead_cube.x)
+                    dead_cube.y += 1
+                    self.block_cell(dead_cube.y, dead_cube.x)
+        return dead_cubes
+
 
 pygame.init()
 screen = pygame.display.set_mode((sett.width, sett.height))
@@ -148,18 +164,18 @@ while not finished:
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                curr_fig.hor_move(-1)
-            elif event.key == pygame.K_RIGHT:
-                curr_fig.hor_move(1)
-            elif event.key == pygame.K_UP:
+            if event.key == pygame.K_UP:
                 curr_fig.turn(1)
             elif event.key == pygame.K_DOWN:
                 curr_fig.turn(-1)
-        if pygame.key.get_pressed()[pygame.K_SPACE]:
-            moving_delay = 25
-        else:
-            moving_delay = 500
+    if pygame.key.get_pressed()[pygame.K_LEFT]:
+        curr_fig.hor_move(-1)
+    elif pygame.key.get_pressed()[pygame.K_RIGHT]:
+        curr_fig.hor_move(1)
+    if pygame.key.get_pressed()[pygame.K_SPACE]:
+        moving_delay = 25
+    else:
+        moving_delay = 500
 
     screen.fill(sett.WHITE)  # Фон
 
@@ -189,6 +205,8 @@ while not finished:
         next_fig.y = 0
         curr_fig = next_fig
         next_fig = Figure(screen, 13, 3, choice(sett.colors), choice(list(sett.figure_dict)))
+        for i in range(1, glass.height + 1):
+            dead_cubes = glass.destroy_line(i, dead_cubes)
 
     for dead_cube in dead_cubes:
         dead_cube.draw()
