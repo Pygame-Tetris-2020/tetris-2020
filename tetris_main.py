@@ -131,13 +131,31 @@ class Box:
         return line
 
     def destroy_line (self, num, dead_cubes):
+        has_been_destroyed = False
         if not self.is_line_free(num):
+            has_been_destroyed = True
             for dead_cube in dead_cubes:
-                if dead_cube.y <= num:
+                if dead_cube.y == num:
+                    self.free_cell(dead_cube.y, dead_cube.x)
+                    dead_cube.y = 0
+                    dead_cube.x = 0
+                elif dead_cube.y < num:
                     self.free_cell(dead_cube.y, dead_cube.x)
                     dead_cube.y += 1
                     self.block_cell(dead_cube.y, dead_cube.x)
-        return dead_cubes
+        return dead_cubes, has_been_destroyed
+
+
+def points_counter(curr_points, destroyed_lines):
+    curr_points += destroyed_lines
+    return curr_points
+
+
+def points_table(curr_points):
+    my_font = pygame.font.Font(None, 50)
+    string = "Счёт: " + str(curr_points)
+    text = my_font.render(string, 1, sett.BLACK)
+    screen.blit(text, (5, 3))
 
 
 pygame.init()
@@ -151,6 +169,9 @@ next_fig = Figure(screen, 13, 3, choice(sett.colors), choice(list(sett.figure_di
 
 # Список неподвижных кубиков, отображаемых на экране
 dead_cubes = []
+
+curr_points = 0 # Текущее количество очков игрока
+destroyed_lines = 0 # После усовершенствования счетчика очков удалить!
 
 finished = False
 clock = pygame.time.Clock()
@@ -205,11 +226,21 @@ while not finished:
         next_fig.y = 0
         curr_fig = next_fig
         next_fig = Figure(screen, 13, 3, choice(sett.colors), choice(list(sett.figure_dict)))
+
+        destroyed_lines = 0
         for i in range(1, glass.height + 1):
-            dead_cubes = glass.destroy_line(i, dead_cubes)
+            dead_cubes, has_been_destroyed = glass.destroy_line(i, dead_cubes)
+            destroyed_lines += int(has_been_destroyed)
+
+    curr_points = points_counter(curr_points, destroyed_lines)
+    destroyed_lines = 0
+    points_table(curr_points)
+
 
     for dead_cube in dead_cubes:
         dead_cube.draw()
+        if dead_cube.x == 0 and dead_cube.y == 0:
+            dead_cubes.remove(dead_cube)
 
     pygame.display.update()
 
