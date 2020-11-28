@@ -81,6 +81,16 @@ class Figure:
         for i in Figure.make(self):
             Cube.draw(i)
 
+    def draw_next(self):
+        if self.type == 'J':
+            self.x = 15
+            self.y = 4
+        elif self.type == 'O':
+            self.x = 14
+            self.y = 5
+        for i in Figure.make(self):
+            Cube.draw(i)
+
     def vert_move(self):
         self.y = self.y + 1
         Figure.make(self)
@@ -92,7 +102,12 @@ class Figure:
             Figure.make(self)
 
     def turn(self, direction):
-        self.orient = (self.orient + direction) % 4
+        can_be_turned = True
+        for i in range(4):
+            for j in range(4):
+                can_be_turned = bool(can_be_turned*Cube.touch_check(Figure.make(self)[i])[j])
+        if can_be_turned:
+            self.orient = (self.orient + direction) % 4
 
 
 class Box:
@@ -152,20 +167,34 @@ def points_counter(curr_points, destroyed_lines):
 
 
 def points_table(curr_points):
-    my_font = pygame.font.Font(None, 50)
-    string = "Счёт: " + str(curr_points)
+    '''
+    Временно отвечает за отображение всех надписей.
+    Нуждается в исправлении!
+    '''
+    my_font = pygame.font.Font('tetris-font.ttf', 28)
+
+    string = "Следующая:"
     text = my_font.render(string, 1, sett.BLACK)
-    screen.blit(text, (5, 3))
+    screen.blit(text, (585, 52))
+
+    string = "Линии: " + str(curr_points)
+    text = my_font.render(string, 1, sett.BLACK)
+    screen.blit(text, (585, 320))
+
+    string = "Очки: 0"
+    text = my_font.render(string, 1, sett.BLACK)
+    screen.blit(text, (585, 365))
 
 
 pygame.init()
 screen = pygame.display.set_mode((sett.width, sett.height))
+pygame.display.set_caption('Тетрис')
 
 glass = Box(screen, sett.BLACK, sett.glass_x, sett.glass_y, 10, 20)
-next_box = Box(screen, sett.BLACK, sett.next_box_x, sett.next_box_y, 5, 5)
+next_box = Box(screen, sett.BLACK, sett.next_box_x, sett.next_box_y, 6, 6)
 
 curr_fig = Figure(screen, 5, 0, choice(sett.colors), choice(list(sett.figure_dict)))  # Первая фигура
-next_fig = Figure(screen, 13, 3, choice(sett.colors), choice(list(sett.figure_dict)))  # Фигура, следующая за первой
+next_fig = Figure(screen, 14, 4, choice(sett.colors), choice(list(sett.figure_dict)))  # Фигура, следующая за первой
 
 # Список неподвижных кубиков, отображаемых на экране
 dead_cubes = []
@@ -204,7 +233,7 @@ while not finished:
     next_box.draw()
 
     curr_fig.draw()
-    next_fig.draw()
+    next_fig.draw_next()
 
     for i in curr_fig.make():
         if i.touch_check()[0]:
@@ -225,7 +254,7 @@ while not finished:
         next_fig.x = 5
         next_fig.y = 0
         curr_fig = next_fig
-        next_fig = Figure(screen, 13, 3, choice(sett.colors), choice(list(sett.figure_dict)))
+        next_fig = Figure(screen, 14, 4, choice(sett.colors), choice(list(sett.figure_dict)))
 
         destroyed_lines = 0
         for i in range(1, glass.height + 1):
