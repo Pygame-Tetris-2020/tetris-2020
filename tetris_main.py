@@ -25,7 +25,6 @@ def calc_y(y):
 
 
 class Cube:
-
     """Создает кубик, являющийся частью полной фигуры."""
 
     def __init__(self, surface, x, y, color):
@@ -44,7 +43,6 @@ class Cube:
         self.color = color
 
     def draw(self):
- Next_figure_and_points
         """Рисует кубик по координатам в клетках "стакана".
 
         """
@@ -70,7 +68,6 @@ class Cube:
 
 
 class Figure:
-
     """Создает фигуру определенной формы, состоящую из четырёх кубиков.  """
 
     def __init__(self, surface, x, y, color, type):
@@ -134,11 +131,10 @@ class Figure:
             Figure.make(self)
 
     def turn(self, direction):
-Next_figure_and_points
         can_be_turned = True
         for i in range(4):
             for j in range(4):
-                can_be_turned = bool(can_be_turned*Cube.touch_check(Figure.make(self)[i])[j])
+                can_be_turned = bool(can_be_turned * Cube.touch_check(Figure.make(self)[i])[j])
         if can_be_turned:
             self.orient = (self.orient + direction) % 4
 
@@ -153,7 +149,7 @@ class Box:
         self.width = width  # ширина поля в клетках
         self.height = height  # высота поля в клетках
 
-        self.cells = [[True for j in range(self.width + 2)] for i in range(self.height + 2)] # список состояний клеток
+        self.cells = [[True for j in range(self.width + 2)] for i in range(self.height + 2)]  # список состояний клеток
         for i in [self.height + 1]:
             for j in range(self.width + 2):
                 self.cells[i][j] = False
@@ -171,14 +167,14 @@ class Box:
     def free_cell(self, x, y):
         self.cells[x][y] = True
 
-    def is_line_free (self, x):
+    def is_line_free(self, x):
         line = False
         for i in [x]:
             for j in range(self.width + 2):
                 line = bool(line + self.cells[i][j])
         return line
 
-    def destroy_line (self, num, dead_cubes):
+    def destroy_line(self, num, dead_cubes):
         has_been_destroyed = False
         if not self.is_line_free(num):
             has_been_destroyed = True
@@ -200,10 +196,10 @@ def points_counter(curr_points, destroyed_lines):
 
 
 def points_table(curr_points):
-    '''
+    """
     Временно отвечает за отображение всех надписей.
     Нуждается в исправлении!
-    '''
+    """
     my_font = pygame.font.Font('tetris-font.ttf', 28)
 
     string = "Следующая:"
@@ -219,24 +215,21 @@ def points_table(curr_points):
     screen.blit(text, (585, 365))
 
 
-
 pygame.init()
 screen = pygame.display.set_mode((sett.width, sett.height))
 pygame.display.set_caption('Тетрис')
 
-Next_figure_and_points
 glass = Box(screen, sett.BLACK, sett.glass_x, sett.glass_y, 10, 20)
 next_box = Box(screen, sett.BLACK, sett.next_box_x, sett.next_box_y, 6, 6)
 
 curr_fig = Figure(screen, 5, 0, choice(sett.colors), choice(list(sett.figure_dict)))  # Первая фигура
 next_fig = Figure(screen, 14, 4, choice(sett.colors), choice(list(sett.figure_dict)))  # Фигура, следующая за первой
 
-
 """ Список неподвижных кубиков, отображаемых на экране """
 dead_cubes = []
 
-curr_points = 0 # Текущее количество очков игрока
-destroyed_lines = 0 # После усовершенствования счетчика очков удалить!
+curr_points = 0  # Текущее количество очков игрока
+destroyed_lines = 0  # После усовершенствования счетчика очков удалить!
 
 finished = False
 clock = pygame.time.Clock()
@@ -300,7 +293,6 @@ while not finished:
     curr_points = points_counter(curr_points, destroyed_lines)
     destroyed_lines = 0
     points_table(curr_points)
-
 
     for dead_cube in dead_cubes:
         dead_cube.draw()
