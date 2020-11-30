@@ -6,11 +6,8 @@ from pygame import *
 import tetris_settings as sett
 
 
-# coding UTF-8
-
-
 def calc_x(x):
-    """Принимает координату "x" кубика в клетках "стакана".
+    """Принимает координату "x" кубика в клетках 'стакана'.
 
     Возвращает экранную координату "x" левого верхнего угла кубика.
 
@@ -19,7 +16,7 @@ def calc_x(x):
 
 
 def calc_y(y):
-    """Принимает координату "y" кубика в клетках "стакана".
+    """Принимает координату "y" кубика в клетках 'стакана'.
 
     Возвращает экранную координату "y" левого верхнего угла кубика.
 
@@ -29,13 +26,25 @@ def calc_y(y):
 
 class Cube:
 
+    """Создает кубик, являющийся частью полной фигуры."""
+
     def __init__(self, surface, x, y, color):
+        """Инициализация кубика.
+
+        Принимает следующие аргументы:
+        surface -- поверхность, на которой изображается кубик
+        x -- координата х, выраженная в клетках 'стакана'
+        y -- координата у, выраженная в клетках 'стакана'
+        color -- цвет кубика
+
+        """
         self.surface = surface
-        self.x = x  # координата x, выраженная в клетках "стакана"
-        self.y = y  # координата y, выраженная в клетках "стакана"
+        self.x = x
+        self.y = y
         self.color = color
 
     def draw(self):
+ Next_figure_and_points
         """Рисует кубик по координатам в клетках "стакана".
 
         """
@@ -62,15 +71,31 @@ class Cube:
 
 class Figure:
 
+    """Создает фигуру определенной формы, состоящую из четырёх кубиков.  """
+
     def __init__(self, surface, x, y, color, type):
+        """Инициализация фигуры, состоящей из четырёх кубиков.
+
+        Положение фигуры определяется её ориентацией и положением опорного кубика.
+
+        Принимает следующие аргументы:
+        surface -- поверхность, на которой изображается фигура
+        x -- координата х опорного кубика, выраженная в клетках "стакана"
+        y -- координата у опорного кубика, выраженная в клетках "стакана"
+        color -- цвет кубика
+        type -- тип фигуры
+        orient -- ориентация фигуры
+
+        """
         self.surface = surface
-        self.x = x  # координата x опорного кубика, выраженная в клетках "стакана"
-        self.y = y  # координата y опорного кубика, выраженная в клетках "стакана"
+        self.x = x
+        self.y = y
         self.color = color
         self.type = type
-        self.orient = 0  # ориентация фигуры
+        self.orient = 0
 
     def make(self):
+        """Возвращает список кубиков, из которых состоит фигура.  """
         cube_list = []
         for i in sett.figure_dict[self.type][self.orient]:
             cube_list.append(Cube(self.surface, self.x + i[0],
@@ -78,6 +103,7 @@ class Figure:
         return cube_list
 
     def draw(self):
+        """Рисует фигуру.  """
         for i in Figure.make(self):
             Cube.draw(i)
 
@@ -92,16 +118,23 @@ class Figure:
             Cube.draw(i)
 
     def vert_move(self):
+        """Отвечает за вертикальное движение(падение в ходе игры) фигуры.  """
         self.y = self.y + 1
         Figure.make(self)
 
     def hor_move(self, direction):
+        """Отвечает за движение фигуры влево-вправо.
+
+        Принимает аргумент direction -- направление движения
+
+        """
         if (Cube.touch_check(Figure.make(self)[1])[1] and direction == -1) or \
                 (Cube.touch_check(Figure.make(self)[2])[3] and direction == 1):
             self.x = self.x + direction
             Figure.make(self)
 
     def turn(self, direction):
+Next_figure_and_points
         can_be_turned = True
         for i in range(4):
             for j in range(4):
@@ -186,17 +219,20 @@ def points_table(curr_points):
     screen.blit(text, (585, 365))
 
 
+
 pygame.init()
 screen = pygame.display.set_mode((sett.width, sett.height))
 pygame.display.set_caption('Тетрис')
 
+Next_figure_and_points
 glass = Box(screen, sett.BLACK, sett.glass_x, sett.glass_y, 10, 20)
 next_box = Box(screen, sett.BLACK, sett.next_box_x, sett.next_box_y, 6, 6)
 
 curr_fig = Figure(screen, 5, 0, choice(sett.colors), choice(list(sett.figure_dict)))  # Первая фигура
 next_fig = Figure(screen, 14, 4, choice(sett.colors), choice(list(sett.figure_dict)))  # Фигура, следующая за первой
 
-# Список неподвижных кубиков, отображаемых на экране
+
+""" Список неподвижных кубиков, отображаемых на экране """
 dead_cubes = []
 
 curr_points = 0 # Текущее количество очков игрока
