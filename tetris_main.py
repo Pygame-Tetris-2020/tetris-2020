@@ -6,6 +6,7 @@ import Buttons
 import tetris_settings as sett
 
 from tetris_menu import *
+from tetris_pause import *
 from box import *
 from figure import *
 from cube import *
@@ -76,6 +77,9 @@ while not finished:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
+        elif event.type == MOUSEBUTTONDOWN:
+            if pause_butt.pressed(pygame.mouse.get_pos()):
+                pause(screen)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 curr_fig.turn(90, glass)
@@ -95,6 +99,9 @@ while not finished:
         vert_moving_delay = 500
 
     screen.fill(sett.WHITE)  # Фон
+
+    pause_butt = Buttons.Button()
+    pause_butt.create_button(screen, sett.WHITE, sett.next_box_x + 3*sett.cube_edge - 50, 420, 100, 80, 3, "Пауза", sett.BLACK)
 
     glass.draw()
     next_box.draw()
