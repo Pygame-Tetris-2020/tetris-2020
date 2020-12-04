@@ -56,7 +56,7 @@ def menu(surface):
                 pygame.quit()
             elif event.type == MOUSEBUTTONDOWN:
                 if play_butt.pressed(pygame.mouse.get_pos()):
-                    print("Play!")
+                    finished = True
                 elif settings_butt.pressed(pygame.mouse.get_pos()):
                     print("Settings!")
                 elif stat_butt.pressed(pygame.mouse.get_pos()):

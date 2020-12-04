@@ -69,9 +69,9 @@ pygame.mixer.music.play(-1)
 figure_stopping = pygame.mixer.Sound('tetris_sounds/figure_stopping.mp3')
 destroying_line = pygame.mixer.Sound('tetris_sounds/destroying_line.mp3')
 
+menu(screen)
+
 while not finished:
-    while not finished:
-        menu(screen)
     clock.tick(sett.FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -137,8 +137,9 @@ while not finished:
 
 
     for dead_cube in dead_cubes:
-        dead_cube.draw()
-        if dead_cube.x == 0 and dead_cube.y == 0:
+        if 0 < dead_cube.x < 17 and 0 < dead_cube.y < 21:
+            dead_cube.draw()
+        else:
             dead_cubes.remove(dead_cube)
 
     pygame.display.update()
