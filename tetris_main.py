@@ -1,6 +1,8 @@
 import pygame
 from pygame import *
 
+import Buttons
+
 import tetris_settings as sett
 
 from tetris_menu import *

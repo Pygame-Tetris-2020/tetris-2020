@@ -3,6 +3,8 @@ from random import *
 import pygame
 from pygame import *
 
+import Buttons
+
 import tetris_settings as sett
 
 from box import *
@@ -18,12 +20,19 @@ def menu(surface):
     vert_control_tick = 0
     vert_moving_delay = 50
     demo_fig = []
-    while True:
+    finished = False
+    while not finished:
         surface.fill(sett.WHITE)
         printer(surface, 'Тетрис', 50, (340, 330))
 
-        pygame.draw.line(surface, sett.BLACK, (450, 0), (450, 800), 1)
-        pygame.draw.line(surface, sett.BLACK, (0, 400), (900, 400), 1)
+        play_butt = Buttons.Button()
+        play_butt.create_button(surface, sett.WHITE, 350, 420, 200, 80, 3, "Играть", sett.BLACK)
+
+        settings_butt = Buttons.Button()
+        settings_butt.create_button(surface, sett.WHITE, 350, 520, 200, 80, 3, "Настройки", sett.BLACK)
+
+        stat_butt = Buttons.Button()
+        stat_butt.create_button(surface, sett.WHITE, 350, 620, 200, 80, 3, "Статистика", sett.BLACK)
 
         if len(demo_fig) < 5:
             for i in range(5 - len(demo_fig)):
@@ -42,4 +51,15 @@ def menu(surface):
             if i.y >=25:
                 demo_fig.remove(i)
 
-        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == MOUSEBUTTONDOWN:
+                if play_butt.pressed(pygame.mouse.get_pos()):
+                    print("Play!")
+                elif settings_butt.pressed(pygame.mouse.get_pos()):
+                    print("Settings!")
+                elif stat_butt.pressed(pygame.mouse.get_pos()):
+                    print("Statistics!")
+
+        pygame.display.flip()
