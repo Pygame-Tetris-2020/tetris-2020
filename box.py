@@ -49,8 +49,8 @@ class Box:
             for dead_cube in dead_cubes:
                 if dead_cube.y == num:
                     self.free_cell(dead_cube.y, dead_cube.x)
-                    dead_cube.y = 0
-                    dead_cube.x = 0
+                    dead_cube.y = sett.glass_y - 5
+                    dead_cube.x = sett.glass_x - 5
                 elif dead_cube.y < num:
                     self.free_cell(dead_cube.y, dead_cube.x)
                     dead_cube.y += 1

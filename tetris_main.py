@@ -11,6 +11,7 @@ from box import *
 from figure import *
 from cube import *
 from music import *
+from game_over import *
 
 # coding UTF-8
 
@@ -35,7 +36,7 @@ def points_table(curr_points):
     text = my_font.render(string, 1, sett.BLACK)
     screen.blit(text, (585, 320))
 
-    string = "Очки: 0"
+    string = "Очки: " + str(curr_points)
     text = my_font.render(string, 1, sett.BLACK)
     screen.blit(text, (585, 365))
 
@@ -103,9 +104,6 @@ while not finished:
     glass.draw()
     next_box.draw()
 
-    curr_fig.draw()
-    next_fig.draw_next()
-
     for i in curr_fig.make():
         if i.touch_check(glass)['down']:
             can_be_moved = True
@@ -141,8 +139,13 @@ while not finished:
     destroyed_lines = 0
     points_table(curr_points)
 
+    curr_fig.draw()
+    next_fig.draw_next()
+
 
     for dead_cube in dead_cubes:
+        if dead_cube.y == 0:
+            game_over(screen, curr_points)
         if 0 < dead_cube.x < 17 and 0 < dead_cube.y < 21:
             dead_cube.draw()
         else:
