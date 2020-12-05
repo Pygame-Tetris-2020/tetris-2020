@@ -10,6 +10,7 @@ from tetris_pause import *
 from box import *
 from figure import *
 from cube import *
+from music import *
 
 # coding UTF-8
 
@@ -38,6 +39,7 @@ def points_table(curr_points):
     text = my_font.render(string, 1, sett.BLACK)
     screen.blit(text, (585, 365))
 
+original.play()
 
 pygame.init()
 screen = pygame.display.set_mode((sett.width, sett.height))
@@ -63,9 +65,6 @@ vert_moving_delay = 500
 
 hor_control_tick = 0
 hor_moving_delay = 100
-
-pygame.mixer.music.load('tetris_sounds/TR1.mp3')
-pygame.mixer.music.play(-1)
 
 figure_stopping = pygame.mixer.Sound('tetris_sounds/figure_stopping.mp3')
 destroying_line = pygame.mixer.Sound('tetris_sounds/destroying_line.mp3')
