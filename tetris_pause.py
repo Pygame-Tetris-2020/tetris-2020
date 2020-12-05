@@ -7,6 +7,7 @@ import Buttons
 
 import tetris_settings as sett
 
+import tetris_menu
 from box import *
 from figure import *
 from cube import *
@@ -18,7 +19,6 @@ def printer(surface, string, pt, cor):
 
 def pause(surface):
     finished = False
-    restart = False
     while not finished:
         surface.fill(sett.WHITE)
         printer(surface, 'Пауза', 50, (360, 330))
@@ -37,5 +37,6 @@ def pause(surface):
                     finished = True
                 elif exit_butt.pressed(pygame.mouse.get_pos()):
                     finished = True
+                    tetris_menu.menu(surface)
 
         pygame.display.flip()

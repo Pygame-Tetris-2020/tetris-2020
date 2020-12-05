@@ -42,6 +42,7 @@ def points_table(curr_points):
 original.play()
 
 pygame.init()
+
 screen = pygame.display.set_mode((sett.width, sett.height))
 pygame.display.set_caption('Тетрис')
 
