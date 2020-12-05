@@ -10,6 +10,7 @@ import tetris_settings as sett
 from box import *
 from figure import *
 from cube import *
+from tetris_gamesett import *
 
 def printer(surface, string, pt, cor):
     font = pygame.font.Font('tetris-font.ttf', pt)
@@ -58,7 +59,7 @@ def menu(surface):
                 if play_butt.pressed(pygame.mouse.get_pos()):
                     finished = True
                 elif settings_butt.pressed(pygame.mouse.get_pos()):
-                    print("Settings!")
+                    settings(surface)
                 elif stat_butt.pressed(pygame.mouse.get_pos()):
                     print("Statistics!")
 

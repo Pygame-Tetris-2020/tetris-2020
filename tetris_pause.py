@@ -18,6 +18,7 @@ def printer(surface, string, pt, cor):
 
 def pause(surface):
     finished = False
+    restart = False
     while not finished:
         surface.fill(sett.WHITE)
         printer(surface, 'Пауза', 50, (360, 330))
@@ -35,6 +36,6 @@ def pause(surface):
                 if cont_butt.pressed(pygame.mouse.get_pos()):
                     finished = True
                 elif exit_butt.pressed(pygame.mouse.get_pos()):
-                    print("Exit!")
+                    finished = True
 
         pygame.display.flip()

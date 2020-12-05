@@ -77,14 +77,14 @@ while not finished:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
-        elif event.type == MOUSEBUTTONDOWN:
-            if pause_butt.pressed(pygame.mouse.get_pos()):
-                pause(screen)
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 curr_fig.turn(90, glass)
             elif event.key == pygame.K_DOWN:
                 curr_fig.turn(-90, glass)
+        elif event.type == MOUSEBUTTONDOWN:
+            if pause_butt.pressed(pygame.mouse.get_pos()):
+                pause(screen)
     if pygame.key.get_pressed()[pygame.K_LEFT]:
         if pygame.time.get_ticks() - hor_control_tick >= hor_moving_delay:
             curr_fig.hor_move(-1, glass)
