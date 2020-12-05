@@ -66,9 +66,6 @@ vert_moving_delay = 500
 hor_control_tick = 0
 hor_moving_delay = 100
 
-figure_stopping = pygame.mixer.Sound('tetris_sounds/figure_stopping.mp3')
-destroying_line = pygame.mixer.Sound('tetris_sounds/destroying_line.mp3')
-
 menu(screen)
 
 while not finished:
@@ -113,7 +110,8 @@ while not finished:
             can_be_moved = True
         else:
             can_be_moved = False
-            figure_stopping.play()
+            if figure_stopping[1]:
+                figure_stopping[0].play()
             break
 
     # noinspection PyUnboundLocalVariable
@@ -135,7 +133,8 @@ while not finished:
             dead_cubes, has_been_destroyed = glass.destroy_line(i, dead_cubes)
             destroyed_lines += int(has_been_destroyed)
             if has_been_destroyed:
-                destroying_line.play()
+                if destroying_line[1]:
+                    destroying_line[0].play()
 
     curr_points = points_counter(curr_points, destroyed_lines)
     destroyed_lines = 0

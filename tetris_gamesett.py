@@ -68,6 +68,16 @@ def settings(surface):
                 elif music2_butt.pressed(pygame.mouse.get_pos()):
                     original.stop()
                     modern.play()
+                elif theme0_butt.pressed(pygame.mouse.get_pos()):
+                    sett.BLACK, sett.WHITE = sett.WHITE, sett.BLACK
+                elif theme1_butt.pressed(pygame.mouse.get_pos()):
+                    sett.BLACK, sett.WHITE = sett.WHITE, sett.BLACK
+                elif sounds0_butt.pressed(pygame.mouse.get_pos()):
+                    figure_stopping[1] = False
+                    destroying_line[1] = False
+                elif sounds1_butt.pressed(pygame.mouse.get_pos()):
+                    figure_stopping[1] = True
+                    destroying_line[1] = True
                 elif stat_butt.pressed(pygame.mouse.get_pos()):
                     print("Statistics!")
 

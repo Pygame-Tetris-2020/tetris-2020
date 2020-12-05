@@ -12,7 +12,6 @@ from figure import *
 from cube import *
 
 class Music:
-
     def __init__(self, song):
         self.song = song
 
@@ -23,5 +22,14 @@ class Music:
     def stop(self):
         pygame.mixer.music.stop()
 
+
+def play_sound(sound, option):
+    if option:
+        sound.play()
+
+
 original = Music('tetris_sounds/TR1.mp3')
 modern = Music('tetris_sounds/TR2.mp3')
+
+figure_stopping = [pygame.mixer.Sound('tetris_sounds/figure_stopping.mp3'), True]
+destroying_line = [pygame.mixer.Sound('tetris_sounds/destroying_line.mp3'), True]
