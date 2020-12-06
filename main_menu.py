@@ -6,6 +6,7 @@ import Buttons, sett
 from figure import *
 from settings import *
 from game import *
+from stat_menu import *
 
 
 def printer(surface, string, pt, cor):
@@ -86,6 +87,6 @@ def menu(surface):
                 elif settings_butt.pressed(pygame.mouse.get_pos()):
                     settings(surface)
                 elif stat_butt.pressed(pygame.mouse.get_pos()):
-                    print("Statistics!")
+                    stat(surface)
 
         pygame.display.flip()
