@@ -1,11 +1,18 @@
 import pygame
 from pygame import *
 
-import tetris_settings as sett
+import Buttons
 
+import sett
+
+from main_menu import *
+from pause import *
 from box import *
 from figure import *
 from cube import *
+from music import *
+from settings import *
+from game_over import *
 
 class Figure:
 
@@ -29,19 +36,19 @@ class Figure:
             i.draw(base_x, base_y)
 
     def draw(self, base_x=sett.glass_x, base_y=sett.glass_y):
-        for i in Figure.make(self):
-            if 0 < i.x < 17 and 0 < i.y < 21:
-                i.draw(base_x, base_y)
+        for cube in self.make():
+            if 0 < cube.x < 17 and 0 < cube.y < 21:
+                cube.draw(base_x, base_y)
 
-    def draw_next(self):
+    def draw_next(self, base_x=sett.glass_x, base_y=sett.glass_y):
         if self.type == 'J':
             self.x = 15
             self.y = 4
         elif self.type == 'O':
             self.x = 14
             self.y = 5
-        for i in Figure.make(self):
-            Cube.draw(i)
+        for cube in self.make():
+            cube.draw(base_x, base_y)
 
     def vert_move(self):
         self.y = self.y + 1

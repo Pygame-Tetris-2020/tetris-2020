@@ -1,15 +1,7 @@
 import pygame
 from pygame import *
 
-import Buttons
-
-import tetris_settings as sett
-
-from tetris_menu import *
-from tetris_pause import *
-from box import *
-from figure import *
-from cube import *
+import main_menu
 
 class Music:
     def __init__(self, song):
@@ -23,14 +15,18 @@ class Music:
         pygame.mixer.music.stop()
 
 
-def play_sound(sound, option):
-    if option:
-        sound.play()
+class Sound:
+    def __init__(self, sound):
+        self.sound = sound
 
+    def play(self):
+        if is_sounds_on:
+            self.play()
 
-original = Music('tetris_sounds/TR1.mp3')
-modern = Music('tetris_sounds/TR2.mp3')
+original = Music('sounds/TR1.mp3')
+modern = Music('sounds/TR2.mp3')
+curr_music = original
 
-figure_stopping = [pygame.mixer.Sound('tetris_sounds/figure_stopping.mp3'), True]
-destroying_line = [pygame.mixer.Sound('tetris_sounds/destroying_line.mp3'), True]
-game_ov = [pygame.mixer.Sound('tetris_sounds/game_over.mp3'), True]
+figure_stopping = pygame.mixer.Sound('sounds/figure_stopping.mp3')
+destroying_line = pygame.mixer.Sound('sounds/destroying_line.mp3')
+game_ov = pygame.mixer.Sound('sounds/game_over.mp3')

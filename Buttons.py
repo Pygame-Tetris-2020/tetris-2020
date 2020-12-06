@@ -4,10 +4,10 @@
 #Buttons
 #Project started: d. 26. august 2012
 
-import tetris_settings as sett
-
 import pygame
 from pygame.locals import *
+
+import sett
 
 pygame.init()
 

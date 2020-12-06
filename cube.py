@@ -3,11 +3,18 @@ from random import *
 import pygame
 from pygame import *
 
-import tetris_settings as sett
+import Buttons
 
+import sett
+
+from main_menu import *
+from pause import *
 from box import *
 from figure import *
 from cube import *
+from music import *
+from settings import *
+from game_over import *
 
 def calc_x(x, base_x=sett.glass_x):
     """Принимает координату "x" кубика в клетках "стакана".
@@ -41,7 +48,7 @@ class Cube:
         """
         pygame.draw.rect(self.surface, self.color,
                                  (calc_x(self.x, base_x), calc_y(self.y, base_y), sett.cube_edge, sett.cube_edge))
-        pygame.draw.rect(self.surface, sett.BLACK,
+        pygame.draw.rect(self.surface, (0, 0, 0),
                                  (calc_x(self.x, base_x), calc_y(self.y, base_y), sett.cube_edge, sett.cube_edge),
                                  1)
 

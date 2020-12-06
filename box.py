@@ -1,11 +1,18 @@
 import pygame
 from pygame import *
 
-import tetris_settings as sett
+import Buttons
 
+import sett
+
+from main_menu import *
+from pause import *
 from box import *
 from figure import *
 from cube import *
+from music import *
+from settings import *
+from game_over import *
 
 class Box:
 

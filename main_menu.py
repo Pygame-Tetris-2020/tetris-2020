@@ -5,12 +5,15 @@ from pygame import *
 
 import Buttons
 
-import tetris_settings as sett
+import sett
 
 from box import *
 from figure import *
 from cube import *
-from tetris_gamesett import *
+from music import *
+from settings import *
+from game_over import *
+from game import *
 
 def printer(surface, string, pt, cor):
     font = pygame.font.Font('tetris-font.ttf', pt)
@@ -57,7 +60,8 @@ def menu(surface):
                 pygame.quit()
             elif event.type == MOUSEBUTTONDOWN:
                 if play_butt.pressed(pygame.mouse.get_pos()):
-                    finished = True
+                    new_game = Game(surface)
+                    new_game.drive()
                 elif settings_butt.pressed(pygame.mouse.get_pos()):
                     settings(surface)
                 elif stat_butt.pressed(pygame.mouse.get_pos()):
