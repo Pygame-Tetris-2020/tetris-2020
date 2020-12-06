@@ -1,32 +1,52 @@
 import pygame
-from pygame import *
 
-import main_menu
+import sett
+
 
 class Music:
-    def __init__(self, song):
-        self.song = song
+    def __init__(self, music_bank):
+        self.music_bank = music_bank
+        self.curr_music = self.music_bank['original']
 
     def play(self):
-        pygame.mixer.music.load(self.song)
+        """Загружает и проигрывает фоновую музыку.
+
+        """
+        pygame.mixer.music.load(self.curr_music)
         pygame.mixer.music.play(-1)
 
     def stop(self):
+        """Останавливает воспроизведение фоновой музыки.
+
+        """
         pygame.mixer.music.stop()
 
+    def change(self, song):
+        """Заменяет текущую композицию на новую.
 
-class Sound:
-    def __init__(self, sound):
-        self.sound = sound
+        Принимает ключ новой композиции в словаре композиций.
 
-    def play(self):
-        if is_sounds_on:
-            self.play()
+        """
+        self.stop()
+        self.curr_music = self.music_bank[song]
+        self.play()
 
-original = Music('sounds/TR1.mp3')
-modern = Music('sounds/TR2.mp3')
-curr_music = original
 
-figure_stopping = pygame.mixer.Sound('sounds/figure_stopping.mp3')
-destroying_line = pygame.mixer.Sound('sounds/destroying_line.mp3')
-game_ov = pygame.mixer.Sound('sounds/game_over.mp3')
+class Sounds:
+    def __init__(self, sound_bank):
+        self.sound_bank = sound_bank
+        self.is_sound_on = True
+
+    def play(self, sound):
+        """Проигрывает игровой звук в случае, если эта опция не отключена пользователем.
+
+        Принимает ключ звука в словаре звуков.
+
+        """
+        curr_sound = pygame.mixer.Sound(self.sound_bank[sound])
+        if self.is_sound_on:
+            curr_sound.play()
+
+
+curr_music = Music(sett.music_bank)
+curr_sound = Sounds(sett.sound_bank)

@@ -1,20 +1,7 @@
-from random import *
-
 import pygame
-from pygame import *
-
-import Buttons
 
 import sett
 
-from main_menu import *
-from pause import *
-from box import *
-from figure import *
-from cube import *
-from music import *
-from settings import *
-from game_over import *
 
 def calc_x(x, base_x=sett.glass_x):
     """Принимает координату "x" кубика в клетках "стакана".
@@ -35,7 +22,6 @@ def calc_y(y, base_y=sett.glass_x):
 
 
 class Cube:
-
     def __init__(self, surface, x, y, color):
         self.surface = surface
         self.x = x  # координата x, выраженная в клетках "стакана"

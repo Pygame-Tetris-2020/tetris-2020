@@ -1,61 +1,63 @@
-from random import *
-
 import pygame
-from pygame import *
+from pygame import MOUSEBUTTONDOWN
 
 import Buttons
-
 import sett
-
-from main_menu import *
-from pause import *
-from box import *
-from figure import *
-from cube import *
 from music import *
-from settings import *
-from game_over import *
+
 
 def printer(surface, string, pt, cor):
+    """Выводит текст на экран.
+
+    Примает поверхность вывода, выводимую строку, размер шрифта и координату левого верхнего угла поля с текстом.
+
+    """
     font = pygame.font.Font('tetris-font.ttf', pt)
     text = font.render(string, 1, sett.BLACK)
     surface.blit(text, cor)
 
+
 def settings(surface):
+    """Отображает окно пользовательских настроек и управляет им.
+
+    Примает поверхность вывода.
+
+    """
     finished = False
     while not finished:
         surface.fill(sett.WHITE)
-        printer(surface, 'Настройки', 40, (320, 30))
 
-        printer(surface, 'Музыка', 32, (20, 110))
+        # Вывод надписей на экран
+        printer(surface, 'Настройки', 40, (320, 160))
+        printer(surface, 'Музыка', 32, (380, 260))
+        printer(surface, 'Звуки', 32, (153, 260))
+        printer(surface, 'Тема', 32, (645, 260))
 
+        # Создание кнопок. Впоследствии будет переделано!
         music0_butt = Buttons.Button()
-        music0_butt.create_button(surface, sett.WHITE, 50, 160, 200, 60, 3, "Без музыки", sett.BLACK)
-
         music1_butt = Buttons.Button()
-        music1_butt.create_button(surface, sett.WHITE, 300, 160, 200, 60, 3, "Оригинальная", sett.BLACK)
-
         music2_butt = Buttons.Button()
-        music2_butt.create_button(surface, sett.WHITE, 550, 160, 200, 60, 3, "Современная", sett.BLACK)
-
-        printer(surface, 'Звуки в игре', 32, (20, 320))
 
         sounds0_butt = Buttons.Button()
-        sounds0_butt.create_button(surface, sett.WHITE, 50, 370, 200, 60, 3, "Выключить", sett.BLACK)
-
         sounds1_butt = Buttons.Button()
-        sounds1_butt.create_button(surface, sett.WHITE, 300, 370, 200, 60, 3, "Включить", sett.BLACK)
-
-        printer(surface, 'Тема', 32, (20, 510))
 
         theme0_butt = Buttons.Button()
-        theme0_butt.create_button(surface, sett.WHITE, 50, 570, 200, 60, 3, "Светлая", sett.BLACK)
-
         theme1_butt = Buttons.Button()
-        theme1_butt.create_button(surface, sett.WHITE, 300, 570, 200, 60, 3, "Темная", sett.BLACK)
 
         back_butt = Buttons.Button()
-        back_butt.create_button(surface, sett.WHITE, 375, 700, 150, 60, 3, "Назад", sett.BLACK)
+
+        # Форматирование кнопок
+        music0_butt.create_button(surface, sett.WHITE, 350, 330, 200, 60, 3, "Без музыки", sett.BLACK)
+        music1_butt.create_button(surface, sett.WHITE, 350, 430, 200, 60, 3, "Оригинальная", sett.BLACK)
+        music2_butt.create_button(surface, sett.WHITE, 350, 530, 200, 60, 3, "Современная", sett.BLACK)
+
+        sounds1_butt.create_button(surface, sett.WHITE, 135, 330, 150, 60, 3, "Включить", sett.BLACK)
+        sounds0_butt.create_button(surface, sett.WHITE, 135, 430, 150, 60, 3, "Выключить", sett.BLACK)
+
+        theme0_butt.create_button(surface, sett.WHITE, 615, 330, 150, 60, 3, "Светлая", sett.BLACK)
+        theme1_butt.create_button(surface, sett.WHITE, 615, 430, 150, 60, 3, "Тёмная", sett.BLACK)
+
+        back_butt.create_button(surface, sett.WHITE, 375, 650, 150, 60, 3, "Назад", sett.BLACK)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -63,26 +65,22 @@ def settings(surface):
             elif event.type == MOUSEBUTTONDOWN:
                 if back_butt.pressed(pygame.mouse.get_pos()):
                     finished = True
+
                 elif music0_butt.pressed(pygame.mouse.get_pos()):
-                    modern.stop()
-                    original.stop()
+                    curr_music.stop()
                 elif music1_butt.pressed(pygame.mouse.get_pos()):
-                    modern.stop()
-                    original.play()
+                    curr_music.change('original')
                 elif music2_butt.pressed(pygame.mouse.get_pos()):
-                    original.stop()
-                    modern.play()
+                    curr_music.change('modern')
+
                 elif theme0_butt.pressed(pygame.mouse.get_pos()):
-                    sett.BLACK, sett.WHITE = sett.WHITE, sett.BLACK
+                    sett.BLACK, sett.WHITE = (0, 0, 0), (255, 255, 255)
                 elif theme1_butt.pressed(pygame.mouse.get_pos()):
-                    sett.BLACK, sett.WHITE = sett.WHITE, sett.BLACK
+                    sett.BLACK, sett.WHITE = (255, 255, 255), (0, 0, 0)
+
                 elif sounds0_butt.pressed(pygame.mouse.get_pos()):
-                    figure_stopping[1] = False
-                    destroying_line[1] = False
+                    curr_sound.is_sound_on = False
                 elif sounds1_butt.pressed(pygame.mouse.get_pos()):
-                    figure_stopping[1] = True
-                    destroying_line[1] = True
-                elif stat_butt.pressed(pygame.mouse.get_pos()):
-                    print("Statistics!")
+                    curr_sound.is_sound_on = True
 
         pygame.display.flip()

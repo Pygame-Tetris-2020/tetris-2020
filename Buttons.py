@@ -8,9 +8,9 @@ import pygame
 from pygame.locals import *
 
 import sett
+from music import *
 
 pygame.init()
-
 
 class Button:
     def create_button(self, surface, color, x, y, length, height, width, text, text_color):
@@ -45,7 +45,7 @@ class Button:
             if mouse[1] > self.rect.topleft[1]:
                 if mouse[0] < self.rect.bottomright[0]:
                     if mouse[1] < self.rect.bottomright[1]:
-                        print("Some button was pressed!")
+                        curr_sound.play('butt_click')
                         return True
                     else: return False
                 else: return False

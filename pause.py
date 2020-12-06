@@ -1,26 +1,28 @@
-from random import *
-
 import pygame
-from pygame import *
+from pygame import MOUSEBUTTONDOWN
 
 import Buttons
-
 import sett
-
 import main_menu
-from box import *
-from figure import *
-from cube import *
-from music import *
-from settings import *
-from game_over import *
+
 
 def printer(surface, string, pt, cor):
+    """Выводит текст на экран.
+
+    Примает поверхность вывода, выводимую строку, размер шрифта и координату левого верхнего угла поля с текстом.
+
+    """
     font = pygame.font.Font('tetris-font.ttf', pt)
     text = font.render(string, 1, sett.BLACK)
     surface.blit(text, cor)
 
+
 def pause(surface):
+    """Отображает окно паузы.
+
+    Примает поверхность вывода.
+
+    """
     finished = False
     while not finished:
         surface.fill(sett.WHITE)
@@ -39,7 +41,6 @@ def pause(surface):
                 if cont_butt.pressed(pygame.mouse.get_pos()):
                     finished = True
                 elif exit_butt.pressed(pygame.mouse.get_pos()):
-                    finished = True
                     main_menu.menu(surface)
 
         pygame.display.flip()
