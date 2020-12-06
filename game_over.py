@@ -5,6 +5,7 @@ import Buttons
 import sett
 import main_menu
 from music import *
+from stat_hist import *
 
 
 def printer(surface, string, pt, cor):
@@ -20,13 +21,21 @@ def printer(surface, string, pt, cor):
 
 def game_over(surface, points):
     """Оперирует окном окончания игры.
-
+    Записывает в txt-файлы дату, время игры и количество очков.
     Примает поверхность вывода и число набранных очков.
     Впоследствии будет добавлен третий аргумент - число уничтоженных линий (пока очки и линии совпадают).
 
     """
     finished = False
     curr_sound.play('game_ov')
+    file = open("tetris_datetime.txt", "a")
+    t = datetime.datetime.now()
+    file.write(str(t)[0:16] + '\n')
+    file.close()
+    file = open("tetris_score.txt", "a")
+    file.write(str(points) + '\n')
+    file.close()
+    histogramm()
 
     while not finished:
         surface.fill(sett.WHITE)
