@@ -2,7 +2,8 @@ from random import randint, choice
 
 import pygame
 
-import Buttons, sett
+import Buttons
+import sett
 from figure import *
 from settings import *
 from game import *
@@ -12,7 +13,8 @@ from stat_menu import *
 def printer(surface, string, pt, cor):
     """Выводит текст на экран.
 
-    Примает поверхность вывода, выводимую строку, размер шрифта и координату левого верхнего угла поля с текстом.
+    Примает поверхность вывода, выводимую строку, размер шрифта
+    и координату левого верхнего угла поля с текстом.
 
     """
     font = pygame.font.Font('tetris-font.ttf', pt)
@@ -23,14 +25,17 @@ def printer(surface, string, pt, cor):
 def animation(surface, vert_control_tick, demo_fig):
     """Отвечает за анимацию фигур в главном меню.
 
-    Примает поверхность вывода, временную метку последнего перемещения и словарь анимационных фигур.
-    Возвращает временную метку последнего перемещения и словарь анимационных фигур.
+    Примает поверхность вывода, временную метку последнего
+    перемещения и словарь анимационных фигур.
+    Возвращает временную метку последнего перемещения и
+    словарь анимационных фигур.
 
     """
     # Редактирование списка анимационных фигур
     if len(demo_fig) < 5:
         for i in range(5 - len(demo_fig)):
-            demo_fig.append(Figure(surface, randint(2, 24), randint(-10, -2), choice(sett.colors),
+            demo_fig.append(Figure(surface, randint(2, 24),
+                                   randint(-10, -2), choice(sett.colors),
                                    choice(list(sett.figure_dict))))
 
     # Отрисовка анимационных фигур
@@ -38,7 +43,8 @@ def animation(surface, vert_control_tick, demo_fig):
         figure.special_draw(0, 0)
 
     # Перемещение анимационных фигур по вертикали
-    if pygame.time.get_ticks() - vert_control_tick >= sett.animation_moving_delay:
+    if pygame.time.get_ticks() - vert_control_tick >= \
+            sett.animation_moving_delay:
         for figure in demo_fig:
             figure.vert_move()
         vert_control_tick = pygame.time.get_ticks()
@@ -71,11 +77,16 @@ def menu(surface):
         settings_butt = Buttons.Button()
         stat_butt = Buttons.Button()
 
-        play_butt.create_button(surface, sett.WHITE, 350, 420, 200, 80, 3, "Играть", sett.BLACK)
-        settings_butt.create_button(surface, sett.WHITE, 350, 520, 200, 80, 3, "Настройки", sett.BLACK)
-        stat_butt.create_button(surface, sett.WHITE, 350, 620, 200, 80, 3, "Статистика", sett.BLACK)
+        play_butt.create_button(surface, sett.WHITE, 350, 420, 200,
+                                80, 3, "Играть", sett.BLACK)
+        settings_butt.create_button(surface, sett.WHITE, 350, 520, 200,
+                                    80, 3, "Настройки", sett.BLACK)
+        stat_butt.create_button(surface, sett.WHITE, 350, 620, 200,
+                                80, 3, "Статистика", sett.BLACK)
 
-        vert_control_tick, demo_fig = animation(surface, vert_control_tick, demo_fig)
+        vert_control_tick, demo_fig = animation(surface,
+                                                vert_control_tick,
+                                                demo_fig)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

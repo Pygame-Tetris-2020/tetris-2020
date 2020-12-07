@@ -22,6 +22,7 @@ def calc_y(y, base_y=sett.glass_x):
 
 
 class Cube:
+
     def __init__(self, surface, x, y, color):
         self.surface = surface
         self.x = x  # координата x, выраженная в клетках "стакана"
@@ -33,16 +34,19 @@ class Cube:
 
         """
         pygame.draw.rect(self.surface, self.color,
-                                 (calc_x(self.x, base_x), calc_y(self.y, base_y), sett.cube_edge, sett.cube_edge))
+                         (calc_x(self.x, base_x),
+                          calc_y(self.y, base_y),
+                          sett.cube_edge, sett.cube_edge))
         pygame.draw.rect(self.surface, (0, 0, 0),
-                                 (calc_x(self.x, base_x), calc_y(self.y, base_y), sett.cube_edge, sett.cube_edge),
-                                 1)
+                         (calc_x(self.x, base_x),
+                          calc_y(self.y, base_y),
+                          sett.cube_edge, sett.cube_edge), 1)
 
     def touch_check(self, glass):
         """Проверяет свободность соседних с данным кубиком клеток.
 
-        Возвращает список логических значений, выражающих свободность клеток
-        снизу, слева, сверху и справа от кубика.
+        Возвращает список логических значений, выражающих свободность
+        клеток снизу, слева, сверху и справа от кубика.
 
         """
         return {'down': glass.cells[self.y + 1][self.x],

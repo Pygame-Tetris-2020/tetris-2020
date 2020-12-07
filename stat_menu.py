@@ -6,8 +6,6 @@ import sett
 from music import *
 
 
-
-
 def printer(surface, string, pt, cor):
     """Выводит текст на экран.
 
@@ -33,7 +31,8 @@ def stat(surface):
         surface.blit(image, (30, 150))
         printer(surface, 'Статистика', 40, (300, 50))
 
-        back_butt.create_button(surface, sett.WHITE, 375, 650, 150, 60, 3, "Назад", sett.BLACK)
+        back_butt.create_button(surface, sett.WHITE, 375, 650,
+                                150, 60, 3, "Назад", sett.BLACK)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -42,4 +41,3 @@ def stat(surface):
                 if back_butt.pressed(pygame.mouse.get_pos()):
                     finished = True
         pygame.display.flip()
-

@@ -9,7 +9,8 @@ from music import *
 def printer(surface, string, pt, cor):
     """Выводит текст на экран.
 
-    Примает поверхность вывода, выводимую строку, размер шрифта и координату левого верхнего угла поля с текстом.
+    Примает поверхность вывода, выводимую строку, размер шрифта и
+    координату левого верхнего угла поля с текстом.
 
     """
     font = pygame.font.Font('tetris-font.ttf', pt)
@@ -47,17 +48,25 @@ def settings(surface):
         back_butt = Buttons.Button()
 
         # Форматирование кнопок
-        music0_butt.create_button(surface, sett.WHITE, 350, 330, 200, 60, 3, "Без музыки", sett.BLACK)
-        music1_butt.create_button(surface, sett.WHITE, 350, 430, 200, 60, 3, "Оригинальная", sett.BLACK)
-        music2_butt.create_button(surface, sett.WHITE, 350, 530, 200, 60, 3, "Современная", sett.BLACK)
+        music0_butt.create_button(surface, sett.WHITE, 350, 330, 200,
+                                  60, 3, "Без музыки", sett.BLACK)
+        music1_butt.create_button(surface, sett.WHITE, 350, 430, 200,
+                                  60, 3, "Оригинальная", sett.BLACK)
+        music2_butt.create_button(surface, sett.WHITE, 350, 530, 200,
+                                  60, 3, "Современная", sett.BLACK)
 
-        sounds1_butt.create_button(surface, sett.WHITE, 135, 330, 150, 60, 3, "Включить", sett.BLACK)
-        sounds0_butt.create_button(surface, sett.WHITE, 135, 430, 150, 60, 3, "Выключить", sett.BLACK)
+        sounds1_butt.create_button(surface, sett.WHITE, 135, 330, 150,
+                                   60, 3, "Включить", sett.BLACK)
+        sounds0_butt.create_button(surface, sett.WHITE, 135, 430, 150,
+                                   60, 3, "Выключить", sett.BLACK)
 
-        theme0_butt.create_button(surface, sett.WHITE, 615, 330, 150, 60, 3, "Светлая", sett.BLACK)
-        theme1_butt.create_button(surface, sett.WHITE, 615, 430, 150, 60, 3, "Тёмная", sett.BLACK)
+        theme0_butt.create_button(surface, sett.WHITE, 615, 330, 150,
+                                  60, 3, "Светлая", sett.BLACK)
+        theme1_butt.create_button(surface, sett.WHITE, 615, 430, 150,
+                                  60, 3, "Тёмная", sett.BLACK)
 
-        back_butt.create_button(surface, sett.WHITE, 375, 650, 150, 60, 3, "Назад", sett.BLACK)
+        back_butt.create_button(surface, sett.WHITE, 375, 650, 150,
+                                60, 3, "Назад", sett.BLACK)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

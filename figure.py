@@ -3,7 +3,9 @@ import pygame
 import sett
 from cube import *
 
+
 class Figure:
+
     def __init__(self, surface, x, y, color, type):
         self.surface = surface
         self.x = x  # координата x опорного кубика, выраженная в клетках "стакана"
@@ -20,7 +22,8 @@ class Figure:
         """
         cube_list = []
         for cube in sett.figure_dict[self.type][self.orient]:
-            cube_list.append(Cube(self.surface, self.x + cube[0], self.y + cube[1], self.color))
+            cube_list.append(Cube(self.surface, self.x + cube[0],
+                                  self.y + cube[1], self.color))
         return cube_list
 
     def special_draw(self, base_x, base_y):
@@ -63,7 +66,8 @@ class Figure:
     def hor_move(self, direction, glass):
         """Осуществляет перемещение фигуры по горизонтали.
 
-        Принимает направление перемещения (1 - впрвво, -1 - влево) и "стакан", в котором находится фигура.
+        Принимает направление перемещения (1 - впрвво, -1 - влево)
+        и "стакан", в котором находится фигура.
 
         """
         if (self.make()[1].touch_check(glass)['left'] and direction == -1) or \
@@ -80,6 +84,7 @@ class Figure:
         can_be_turned = True
         for i in range(4):
             for j in 'down', 'left', 'up', 'right':
-                can_be_turned = bool(can_be_turned * self.make()[i].touch_check(glass)[j])
+                can_be_turned = bool(can_be_turned *
+                                     self.make()[i].touch_check(glass)[j])
         if can_be_turned:
             self.orient = (self.orient + angle) % 360

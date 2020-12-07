@@ -29,10 +29,12 @@ def pause(surface):
         printer(surface, 'Пауза', 50, (360, 330))
 
         cont_butt = Buttons.Button()
-        cont_butt.create_button(surface, sett.WHITE, 325, 420, 250, 80, 3, "Продолжить", sett.BLACK)
+        cont_butt.create_button(surface, sett.WHITE, 325, 420, 250,
+                                80, 3, "Продолжить", sett.BLACK)
 
         exit_butt = Buttons.Button()
-        exit_butt.create_button(surface, sett.WHITE, 325, 520, 250, 80, 3, "Выйти из игры", sett.BLACK)
+        exit_butt.create_button(surface, sett.WHITE, 325, 520, 250,
+                                80, 3, "Выйти из игры", sett.BLACK)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

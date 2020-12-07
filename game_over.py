@@ -12,7 +12,8 @@ from stat_hist import *
 def printer(surface, string, pt, cor):
     """Выводит текст на экран.
 
-    Примает поверхность вывода, выводимую строку, размер шрифта и координату левого верхнего угла поля с текстом.
+    Примает поверхность вывода, выводимую строку,
+    размер шрифта и координату левого верхнего угла поля с текстом.
 
     """
     font = pygame.font.Font('tetris-font.ttf', pt)
@@ -24,7 +25,8 @@ def game_over(surface, points):
     """Оперирует окном окончания игры.
     Записывает в txt-файлы дату, время игры и количество очков.
     Примает поверхность вывода и число набранных очков.
-    Впоследствии будет добавлен третий аргумент - число уничтоженных линий (пока очки и линии совпадают).
+    Впоследствии будет добавлен третий аргумент -
+    число уничтоженных линий (пока очки и линии совпадают).
 
     """
     finished = False
@@ -48,7 +50,8 @@ def game_over(surface, points):
         curr_music.stop()
 
         ex_butt = Buttons.Button()
-        ex_butt.create_button(surface, sett.WHITE, 350, 530, 200, 60, 3, "В меню", sett.BLACK)
+        ex_butt.create_button(surface, sett.WHITE, 350, 530, 200,
+                              60, 3, "В меню", sett.BLACK)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
