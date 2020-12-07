@@ -42,14 +42,13 @@ def game_over(surface, points):
         surface.fill(sett.WHITE)
 
         printer(surface, 'Игра окончена', 45, (245, 330))
-        printer(surface, 'Линий: ' + str(points), 30, (245, 450))
-        printer(surface, 'Очков: ' + str(points), 30, (245, 500))
-        printer(surface, 'Имя игрока:', 30, (245, 400))
+        printer(surface, 'Линий: ' + str(points), 30, (365, 410))
+        printer(surface, 'Очков: ' + str(points), 30, (365, 460))
 
         curr_music.stop()
 
         ex_butt = Buttons.Button()
-        ex_butt.create_button(surface, sett.WHITE, 350, 580, 200, 60, 3, "В меню", sett.BLACK)
+        ex_butt.create_button(surface, sett.WHITE, 350, 530, 200, 60, 3, "В меню", sett.BLACK)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
