@@ -15,9 +15,6 @@ pygame.init()
 
 class Button:
 
-    def __init__(self):
-        self.rect = pygame.Rect(x, y, length, height)
-
     def create_button(self, surface, color, x, y,
                       length, height, width,
                       text, text_color):
