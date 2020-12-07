@@ -14,7 +14,6 @@ pygame.init()
 
 
 class Button:
-
     def create_button(self, surface, color, x, y,
                       length, height, width,
                       text, text_color):
@@ -22,6 +21,7 @@ class Button:
                                    length, height, x, y, width)
         surface = self.write_text(surface, text,
                                   text_color, length, height, x, y)
+        self.rect = pygame.Rect(x, y, length, height)
         return surface
 
     def write_text(self, surface, text, text_color, length, height, x, y):

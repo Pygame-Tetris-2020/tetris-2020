@@ -15,9 +15,8 @@ class Box:
         self.width = width  # ширина поля в клетках
         self.height = height  # высота поля в клетках
 
-        self.cells = []
-        for i in range(self.height + 2):
-            pass
+        self.cells = [[True for j in range(self.width + 2)] for i in range(self.height + 2)]
+        
         for i in [self.height + 1]:
             for j in range(self.width + 2):
                 self.cells[i][j] = False
