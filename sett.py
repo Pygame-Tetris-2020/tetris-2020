@@ -30,10 +30,10 @@ music_bank = {'original': 'sounds/TR1.mp3',
               'modern': 'sounds/TR2.mp3'}
 
 # Словарь звуков
-sound_bank = {'figure_stopping': 'sounds/figure_stopping.mp3',
-              'destroying_line': 'sounds/destroying_line.mp3',
-              'game_ov': 'sounds/game_over.mp3',
-              'butt_click': 'sounds/button.mp3'}
+sound_bank = {'figure_stopping': 'sounds/figure_stopping.wav',
+              'destroying_line': 'sounds/destroying_line.wav',
+              'game_ov': 'sounds/game_over.wav',
+              'butt_click': 'sounds/button.wav'}
 
 """ Словарь фигур
 Порядок следования кубиков в словаре: самый нижний, 
