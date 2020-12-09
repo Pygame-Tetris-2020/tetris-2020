@@ -1,11 +1,13 @@
 from random import choice
 from collections import deque
+from io import BytesIO
 
 import matplotlib.pyplot as plt
 
 import sett
 
 def histogramm():
+    buffer_ = BytesIO()
     """ Считывание информации из файлов о последних 5 играх """
     with open('tetris_datetime.txt') as f:
         datetime_list = list(deque(f, 5))
@@ -49,4 +51,6 @@ def histogramm():
     ax.spines['top'].set_visible(False)
 
     plt.xlabel("Рекорд: " + str(rec) + 40 * '   ', fontsize=14)
-    plt.savefig('1.png', bbox_inches='tight', dpi=80)
+    plt.savefig(buffer_, bbox_inches='tight', dpi=80)
+    buffer_.seek(0)
+    return buffer_

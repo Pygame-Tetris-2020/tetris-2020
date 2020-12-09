@@ -4,7 +4,7 @@ from pygame import MOUSEBUTTONDOWN
 import Buttons
 import sett
 from music import *
-
+from stat_hist import histogramm
 
 def printer(surface, string, pt, cor):
     """Выводит текст на экран.
@@ -22,7 +22,7 @@ def stat(surface):
     """Отображает окно статистики
 
     """
-    image = pygame.image.load('1.png')
+    image = pygame.image.load(histogramm())
     
     finished = False
     while not finished:
