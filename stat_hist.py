@@ -6,6 +6,13 @@ import matplotlib.pyplot as plt
 
 import sett
 
+def record():
+    with open('tetris_score.txt') as p:
+        record_list = p.read().splitlines()
+    int_record_list = [int(i) for i in record_list]
+    rec = max(int_record_list)
+    return rec
+
 def histogramm():
     buffer_ = BytesIO()
     """ Считывание информации из файлов о последних 5 играх """
@@ -17,12 +24,6 @@ def histogramm():
 
     int_score_list = [int(i) for i in score_list]
 
-    """Нахождение рекордного результата """
-    with open('tetris_score.txt') as p:
-        record_list = p.read().splitlines()
-
-    int_record_list = [int(i) for i in record_list]
-    rec = max(int_record_list)
 
     """ Создание столбчатой диаграммы """
     x = datetime_list
@@ -49,8 +50,6 @@ def histogramm():
 
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-
-    plt.xlabel("Рекорд: " + str(rec) + 40 * '   ', fontsize=14)
     plt.savefig(buffer_, bbox_inches='tight', dpi=80)
     buffer_.seek(0)
     return buffer_

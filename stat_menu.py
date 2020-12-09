@@ -4,7 +4,7 @@ from pygame import MOUSEBUTTONDOWN
 import Buttons
 import sett
 from music import *
-from stat_hist import histogramm
+import stat_hist
 
 def printer(surface, string, pt, cor):
     """Выводит текст на экран.
@@ -22,7 +22,7 @@ def stat(surface):
     """Отображает окно статистики
 
     """
-    image = pygame.image.load(histogramm())
+    image = pygame.image.load(stat_hist.histogramm())
     
     finished = False
     while not finished:
@@ -30,6 +30,8 @@ def stat(surface):
         back_butt = Buttons.Button()
         surface.blit(image, (10, 150))
         printer(surface, 'Статистика', 40, (300, 50))
+        printer(surface, 'Рекорд: '+str(stat_hist.record()), 25, (80, 600))
+        
 
         back_butt.create_button(surface, sett.WHITE, 375, 650,
                                 150, 60, 3, "Назад", sett.BLACK)
