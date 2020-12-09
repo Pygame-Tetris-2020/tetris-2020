@@ -28,7 +28,7 @@ def stat(surface):
     while not finished:
         surface.fill(sett.WHITE)
         back_butt = Buttons.Button()
-        surface.blit(image, (30, 150))
+        surface.blit(image, (10, 150))
         printer(surface, 'Статистика', 40, (300, 50))
 
         back_butt.create_button(surface, sett.WHITE, 375, 650,
