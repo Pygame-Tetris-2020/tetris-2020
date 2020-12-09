@@ -23,6 +23,18 @@ def printer(surface, string, pt, cor):
     text = font.render(string, 1, sett.BLACK)
     surface.blit(text, cor)
 
+def auxiliary_counter(destroyed_lines):
+    increase = 0
+    if destroyed_lines == 1:
+        increase = 100
+    elif destroyed_lines == 2:
+        increase = 300
+    elif destroyed_lines == 3:
+        increase = 700
+    elif destroyed_lines == 4:
+        increase = 1500
+    return increase
+
 
 class Game:
     def __init__(self, surface):
@@ -40,6 +52,7 @@ class Game:
                                choice(list(sett.figure_dict)))
 
         self.curr_lines = 0  # Количество уничтоженных линий
+        self.curr_points = 0 # Число очков, набранных игроком
 
         # Служебные параметры
         self.finished = False  # Флаг окончания игры
@@ -54,6 +67,7 @@ class Game:
 
         """
         self.curr_lines += destroyed_lines
+        self.curr_points += auxiliary_counter(destroyed_lines)
 
     def draw(self):
         """Отрисовывает все объекты класса.
@@ -72,7 +86,7 @@ class Game:
 
         printer(self.screen, "Следующая:", 28, (585, 52))
         printer(self.screen, "Линии: " + str(self.curr_lines), 28, (585, 320))
-        printer(self.screen, "Очки: " + str(self.curr_lines), 28, (585, 365))
+        printer(self.screen, "Очки: " + str(self.curr_points), 28, (585, 365))
 
     def check_events(self):
         """Обрабатывает игровые события.
@@ -157,7 +171,7 @@ class Game:
         """
         for dead_cube in self.dead_cubes:
             if dead_cube.y == 0:
-                game_over(self.screen, self.curr_lines)
+                game_over(self.screen, self.curr_lines, self.curr_points)
             if not (0 < dead_cube.x < 17 and 0 < dead_cube.y < 21):
                 self.dead_cubes.remove(dead_cube)
 

@@ -21,7 +21,7 @@ def printer(surface, string, pt, cor):
     surface.blit(text, cor)
 
 
-def game_over(surface, points):
+def game_over(surface, lines, points):
     """Оперирует окном окончания игры.
     Записывает в txt-файлы дату, время игры и количество очков.
     Примает поверхность вывода и число набранных очков.
@@ -44,8 +44,12 @@ def game_over(surface, points):
         surface.fill(sett.WHITE)
 
         printer(surface, 'Игра окончена', 45, (245, 330))
-        printer(surface, 'Линий: ' + str(points), 30, (365, 410))
-        printer(surface, 'Очков: ' + str(points), 30, (365, 460))
+
+        lines_x = 365 - (len(str(lines)) - 1) * 8  # Центрирование строки с числом линий
+        printer(surface, 'Линий: ' + str(lines), 30, (lines_x, 410))
+
+        points_x = 365 - (len(str(points)) - 1)*8 # Центрирование строки с числом очков
+        printer(surface, 'Очков: ' + str(points), 30, (points_x, 460))
 
         curr_music.stop()
 
