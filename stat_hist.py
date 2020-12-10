@@ -26,6 +26,8 @@ def histogramm():
 
 
     """ Создание столбчатой диаграммы """
+    if sett.WHITE_HEX == '#000000': # Смена цвета подложки в случае темной темы
+        plt.style.use('dark_background')
     x = datetime_list
     y = int_score_list
     fig, ax = plt.subplots()
@@ -40,7 +42,7 @@ def histogramm():
     fig.set_figwidth(13)
     fig.set_figheight(6)
     fig.set_facecolor('white')
-    ax.set_facecolor('white')
+    ax.set_facecolor(sett.WHITE_HEX)
 
     for x, y in zip(datetime_list, int_score_list):
         plt.text(x, y + 1, '%d' % y, ha='center', va='bottom', fontsize=14)

@@ -83,9 +83,9 @@ def settings(surface):
                     curr_music.change('modern')
 
                 elif theme0_butt.pressed(pygame.mouse.get_pos()):
-                    sett.BLACK, sett.WHITE = (0, 0, 0), (255, 255, 255)
+                    sett.BLACK, sett.WHITE, sett.WHITE_HEX = (0, 0, 0), (255, 255, 255), '#ffffff'
                 elif theme1_butt.pressed(pygame.mouse.get_pos()):
-                    sett.BLACK, sett.WHITE = (255, 255, 255), (0, 0, 0)
+                    sett.BLACK, sett.WHITE, sett.WHITE_HEX = (255, 255, 255), (0, 0, 0), '#000000'
 
                 elif sounds0_butt.pressed(pygame.mouse.get_pos()):
                     curr_sound.is_sound_on = False
