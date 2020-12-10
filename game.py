@@ -10,20 +10,14 @@ from cube import *
 from pause import *
 from music import *
 from game_over import *
-
-
-def printer(surface, string, pt, cor):
-    """Выводит текст на экран.
-
-    Примает поверхность вывода, выводимую строку, размер шрифта и
-    координату левого верхнего угла поля с текстом.
-
-    """
-    font = pygame.font.Font('tetris-font.ttf', pt)
-    text = font.render(string, 1, sett.BLACK)
-    surface.blit(text, cor)
+from util import printer
 
 def auxiliary_counter(destroyed_lines):
+    """Определяет величину прибавки очков в зависимости от числа уничтоженных линий
+
+    Возвращает велчину прибавки очков.
+
+    """
     increase = 0
     if destroyed_lines == 1:
         increase = 100
