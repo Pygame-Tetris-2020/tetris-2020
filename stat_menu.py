@@ -9,7 +9,6 @@ import stat_hist
 
 
 def stat(surface):
-    
     """Отображает окно статистики
 
     """

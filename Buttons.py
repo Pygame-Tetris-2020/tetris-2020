@@ -14,9 +14,24 @@ pygame.init()
 
 
 class Button:
+
     def create_button(self, surface, color, x, y,
                       length, height, width,
                       text, text_color):
+        """Responsible for creating the button.
+
+        Accepts the following arguments:
+        surface - defines the drawing surface
+        color - defines the drawing color
+        x - x-coord of left upper angle
+        y - y-coord of left upper angle
+        length - defines the length of button
+        height - defines the height of button
+        width - defines the width of button
+        text - text in button
+        text_color - color of the text on the button
+
+        """
         surface = self.draw_button(surface, color,
                                    length, height, x, y, width)
         surface = self.write_text(surface, text,
@@ -25,6 +40,18 @@ class Button:
         return surface
 
     def write_text(self, surface, text, text_color, length, height, x, y):
+        """Responsible for writing the text on the button.
+
+        Accepts the following arguments:
+        surface - defines the drawing surface
+        text - text in button
+        text_color - color of the text on the button
+        x - x-coord of left upper angle
+        y - y-coord of left upper angle
+        length - defines the length of button
+        height - defines the height of button
+
+        """
         font_size = int(length // len(text))
         myFont = pygame.font.Font('tetris-font.ttf', font_size)
         myText = myFont.render(text, 1, text_color)
@@ -33,6 +60,18 @@ class Button:
         return surface
 
     def draw_button(self, surface, color, length, height, x, y, width):
+        """Responsible for drawing the button.
+
+        Accepts the following arguments:
+        surface - defines the drawing surface
+        color - defines the drawing color
+        x - x-coord of left upper angle
+        y - y-coord of left upper angle
+        length - defines the length of button
+        height - defines the height of button
+        width - defines the width of button
+
+        """
         for i in range(1, 10):
             s = pygame.Surface((length + (i * 2), height + (i * 2)))
             s.fill(color)

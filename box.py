@@ -8,12 +8,21 @@ from cube import *
 class Box:
 
     def __init__(self, surface, color, x_left_up, y_left_up, width, height):
+        """Принимает следующие аргументы:
+
+        color - цвет границы поля
+        x_left_up - координата х левого верхнего угла поля
+        y_left_up - координата у левого верхнего угла поля
+        width - ширина поля в клетках
+        height - высота поля в клетках
+
+        """
         self.surface = surface
-        self.color = color  # цвет границы поля
-        self.x_left_up = x_left_up  # координата x левого верхнего угла поля
-        self.y_left_up = y_left_up  # координата y левого верхнего угла поля
-        self.width = width  # ширина поля в клетках
-        self.height = height  # высота поля в клетках
+        self.color = color
+        self.x_left_up = x_left_up
+        self.y_left_up = y_left_up
+        self.width = width
+        self.height = height
 
         self.cells = [[True for j in range(self.width + 2)] for i in range(self.height + 2)]
         

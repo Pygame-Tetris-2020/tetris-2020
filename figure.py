@@ -7,11 +7,17 @@ from cube import *
 class Figure:
 
     def __init__(self, surface, x, y, color, type):
+        """Принимает следующие аргументы:
+        x - координата x опорного кубика, выраженная в клетках "стакана"
+        y - координата y опорного кубика, выраженная в клетках "стакана"
+        type - вид фигуры
+
+        """
         self.surface = surface
-        self.x = x  # координата x опорного кубика, выраженная в клетках "стакана"
-        self.y = y  # координата y опорного кубика, выраженная в клетках "стакана"
+        self.x = x
+        self.y = y
         self.color = color
-        self.type = type  # вид фигуры
+        self.type = type
         self.orient = 0  # ориентация фигуры
 
     def make(self):

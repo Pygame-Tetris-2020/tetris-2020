@@ -4,6 +4,7 @@ import sett
 
 
 class Music:
+
     def __init__(self, music_bank):
         self.music_bank = music_bank
         self.curr_music = self.music_bank['original']
@@ -33,6 +34,7 @@ class Music:
 
 
 class Sounds:
+
     def __init__(self, sound_bank):
         self.sound_bank = sound_bank
         self.is_sound_on = True

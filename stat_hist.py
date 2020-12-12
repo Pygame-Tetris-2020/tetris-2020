@@ -26,7 +26,7 @@ def histogramm():
 
 
     """ Создание столбчатой диаграммы """
-    if sett.WHITE_HEX == '#000000': # Смена цвета подложки в случае темной темы
+    if sett.WHITE_HEX == '#000000':  # Смена цвета подложки в случае темной темы
         plt.style.use('dark_background')
     x = datetime_list
     y = int_score_list

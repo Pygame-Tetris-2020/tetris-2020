@@ -24,9 +24,16 @@ def calc_y(y, base_y=sett.glass_x):
 class Cube:
 
     def __init__(self, surface, x, y, color):
+        """Принимает следующие аргументы:
+
+        x - координата x, выраженная в клетках "стакана"
+        y - координата y, выраженная в клетках "стакана"
+        color - цвет кубика
+
+        """
         self.surface = surface
-        self.x = x  # координата x, выраженная в клетках "стакана"
-        self.y = y  # координата y, выраженная в клетках "стакана"
+        self.x = x
+        self.y = y
         self.color = color
 
     def draw(self, base_x=sett.glass_x, base_y=sett.glass_y):

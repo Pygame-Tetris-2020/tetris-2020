@@ -13,7 +13,8 @@ from game_over import *
 from util import printer
 
 def auxiliary_counter(destroyed_lines):
-    """Определяет величину прибавки очков в зависимости от числа уничтоженных линий
+    """Определяет величину прибавки очков в зависимости
+    от числа уничтоженных линий.
 
     Возвращает велчину прибавки очков.
 
@@ -31,6 +32,7 @@ def auxiliary_counter(destroyed_lines):
 
 
 class Game:
+
     def __init__(self, surface):
         self.screen = surface
         self.glass = Box(self.screen, sett.BLACK, sett.glass_x,
@@ -46,7 +48,7 @@ class Game:
                                choice(list(sett.figure_dict)))
 
         self.curr_lines = 0  # Количество уничтоженных линий
-        self.curr_points = 0 # Число очков, набранных игроком
+        self.curr_points = 0  # Число очков, набранных игроком
 
         # Служебные параметры
         self.finished = False  # Флаг окончания игры
