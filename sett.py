@@ -32,8 +32,8 @@ normal_vert_moving_delay = 500  # нормальная задержка при �
 animation_moving_delay = 50  # задержка при перемещении фигуры по вертикали в анимации главного меню
 
 # Словарь композиций
-music_bank = {'original': 'sounds/TR1.mp3',
-              'modern': 'sounds/TR2.mp3'}
+music_bank = {'original': 'sounds/TR1.wav',
+              'modern': 'sounds/TR2.wav'}
 
 # Словарь звуков
 sound_bank = {'figure_stopping': 'sounds/figure_stopping.wav',
